@@ -1,4 +1,4 @@
-package com.mhdq.manager.service;
+package com.mhdq.service.manager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
