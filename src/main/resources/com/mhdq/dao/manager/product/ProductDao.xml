@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.product.ProductDao">
+	<resultMap type="com.manager.product.dto.ProductDTO" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="prod_id" property="prodId" jdbcType="VARCHAR" />
+        <result column="code_id" property="codeId"  />
+        <result column="prod_name" property="prodName"  />
+        <result column="prod_detail" property="prodDetail" />
+        <result column="prod_type_name" property="prodTypeName" />
+        <result column="prod_prize" property="prodPrize" />
+        <result column="prod_free_time" property="prodFreeTime" />
+        <result column="prod_sum" property="prodSum" />
+        <result column="prod_sell_sum" property="prodSellSum" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,prodId,code_id,prod_name,prod_detail,prod_type_name,
+		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time
+	</sql>
+	
+	<insert id="insert">
+		insert into t_product (
+		<include refid="Base_Column_List"></include>
+		) values (
+			#{id,jdbcType=BIGINT},#{prodId, jdbcType=VARCHAR},#{codeId,jdbcType=VARCHAR},
+			#{prodName,jdbcType=VARCHAR},#{prodDetail,jdbcType=VARCHAR},#{prodTypeName,jdbcType=VARCHAR},
+			#{prodPrize,jdbcType=DECIMAL},#{prodFreeTime,jdbcType=VARCHAR},#{prodSum,jdbcType=INTEGER},
+			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now()
+		)
+	</insert>
+	
+</mapper>

@@ -12,7 +12,19 @@
      <!-- 全局配置 -->
     <dubbo:provider timeout="20000" retries="0" protocol="dubbo" /> 
     
-    <dubbo:protocol name="dubbo" port="${dubbo.local.url.port}" />       
+    <dubbo:protocol name="dubbo" port="${dubbo.local.url.port}" serialization="${dubbo.serialization}"/>       
     <dubbo:service interface="com.mhdq.manager.api.service.LoginMsService" ref="loginMsService" />       <!-- 和本地bean一样实现服务 -->  
-    <bean id="loginMsService" class="com.mhdq.manager.service.LoginMsServiceImpl" />  
+    <bean id="loginMsService" class="com.mhdq.service.manager.LoginMsServiceImpl" />
+  <!--   <bean id="ProductMsService" class="com.mhdq.servicems.manager.product.ProductMsServiceImpl" /> 
+    <bean id="ProductResMsService" class="com.mhdq.servicems.manager.productres.ProductResMsServiceImpl" />  -->
+   <bean id="ProductMsService"
+          class="com.mhdq.servicems.manager.product.ProductMsServiceImpl" />
+    <dubbo:service
+            interface="com.mhdq.manager.api.service.product.ProductMsService"  timeout="50000"
+            retries="0" ref="ProductMsService" protocol="dubbo" />
+    <bean id="ProductResMsService"
+          class="com.mhdq.servicems.manager.productres.ProductResMsServiceImpl" />
+    <dubbo:service
+            interface="com.mhdq.manager.api.service.productres.ProductResMsService"  timeout="50000"
+            retries="0" ref="ProductResMsService" protocol="dubbo" /> 
 </beans>  

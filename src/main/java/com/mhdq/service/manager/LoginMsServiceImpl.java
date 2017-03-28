@@ -9,8 +9,8 @@ public class LoginMsServiceImpl implements LoginMsService{
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	@Override
-	public void sayHello() {
-		logger.info("我是LoginMsServiceImpl");
+	public void sayHello(String name) {
+		logger.info("我是LoginMsServiceImpl" + name);
 	}
 
 }
