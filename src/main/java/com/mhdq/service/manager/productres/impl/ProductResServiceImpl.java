@@ -29,4 +29,9 @@ public class ProductResServiceImpl implements ProductResService {
 		return productResDao.insertByBatch(list);
 	}
 
+	@Override
+	public List<ProductResDTO> getProductResList(String prodId) {
+		return productResDao.getProdResByProdId(prodId);
+	}
+
 }

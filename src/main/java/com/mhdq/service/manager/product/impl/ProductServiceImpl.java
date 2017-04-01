@@ -1,5 +1,7 @@
 package com.mhdq.service.manager.product.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.manager.product.dto.ProductDTO;
+import com.manager.product.dto.ProductResDTO;
 import com.mhdq.dao.manager.product.ProductDao;
+import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.exception.ServiceException;
 import com.mhdq.service.manager.product.ProductService;
+import com.server.api.easyui.DataGrid;
+import com.server.api.easyui.Page;
 import com.server.api.util.GenerateCode;
 
 @Service
@@ -20,6 +26,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private ProductResDao productResDao;
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -39,6 +48,33 @@ public class ProductServiceImpl implements ProductService {
 		productDTO.setProdSellSum(0);
 		productDTO.setStatus(0);
 		productDTO.setProdId(prodId);
+	}
+
+	@Override
+	public DataGrid dataGrid(ProductDTO productDTO, Page page) {
+		page.setParams(productDTO);
+		List<ProductDTO> list = productDao.dataGrid(page);
+		return Page.getDataGrid(page, list, ProductDTO.class);
+	}
+
+	@Override
+	public Integer deleteProduct(String productId) {
+		return productDao.deleteByProductId(productId);
+	}
+
+	@Override
+	public Integer updateProduct(ProductDTO productDTO) {
+		return productDao.update(productDTO);
+	}
+
+	@Override
+	public Integer releaseProduct(String productId) {
+		return productDao.updateProductStatus(productId);
+	}
+
+	@Override
+	public ProductDTO showProduct(Long id) {
+		return productDao.selectByPrimaryKey(id);
 	}
 
 

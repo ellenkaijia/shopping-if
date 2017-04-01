@@ -1,7 +1,10 @@
 package com.mhdq.dao.manager.productres;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.manager.product.dto.ProductResDTO;
-import com.mhdq.dao.manager.BaseDao;
 
 /**  
 * 类说明   
@@ -9,6 +12,13 @@ import com.mhdq.dao.manager.BaseDao;
 * @author zkj  
 * @date 2017年3月28日  新建  
 */
-public interface ProductResDao extends BaseDao<ProductResDTO> {
+public interface ProductResDao {
 
+	ProductResDTO selectByPrimaryKey(Long id);
+	
+	int insert(ProductResDTO t);
+	
+	int insertByBatch(@Param("list") List<ProductResDTO> list);
+	
+	List<ProductResDTO> getProdResByProdId(@Param("prodId") String prodId);
 }

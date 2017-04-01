@@ -22,17 +22,23 @@
 		)
 	</insert>
 	
-	<insert id="insertByBatch" useGeneratedKeys="true"
-	parameterType="list">
+	<insert id="insertByBatch" parameterType="java.util.List">
 		insert into t_product_res (
 		<include refid="Base_Column_List"></include>
 		) values
 		<foreach collection="list" item="item" separator=",">
 		(
-		#{id,jdbcType=BIGINT},#{resId, jdbcType=VARCHAR},#{resParentId,jdbcType=VARCHAR},
-		#{resSeq,jdbcType=INTEGER},#{prodId,jdbcType=VARCHAR}
+		#{item.id,jdbcType=BIGINT},#{item.resId, jdbcType=VARCHAR},#{item.resParentId,jdbcType=VARCHAR},
+		#{item.resSeq,jdbcType=INTEGER},#{item.prodId,jdbcType=VARCHAR}
 		)
 		</foreach>
 	</insert>
+	
+	<select id="getProdResByProdId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from t_product_res
+		where prod_id = #{prodId}
+		order by res_seq
+	</select>
 	
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.manager.product.dto.ProductResDTO;
 import com.mhdq.manager.api.service.productres.ProductResMsService;
 import com.mhdq.rpc.RpcRespDTO;
+import com.mhdq.service.manager.product.ProductService;
 import com.mhdq.service.manager.productres.ProductResService;
 
 /**  
@@ -20,6 +21,7 @@ public class ProductResMsServiceImpl implements ProductResMsService {
 	@Autowired
 	private ProductResService productResService;
 	
+	
 	@Override
 	public RpcRespDTO<Integer> createProductRes(List<ProductResDTO> list) {
 		RpcRespDTO<Integer> rpcRespDTO = new RpcRespDTO<>();
@@ -29,5 +31,11 @@ public class ProductResMsServiceImpl implements ProductResMsService {
 		}
 		return rpcRespDTO.buildSuccessResp(cout);
 	}
+
+	@Override
+	public List<ProductResDTO> getProductResList(String prodId) {
+		return productResService.getProductResList(prodId);
+	}
+	
 
 }

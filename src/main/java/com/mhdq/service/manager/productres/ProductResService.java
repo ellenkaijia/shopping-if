@@ -13,4 +13,8 @@ import com.manager.product.dto.ProductResDTO;
 public interface ProductResService {
 
 	int createProductRes(List<ProductResDTO> list);
+	
+	List<ProductResDTO> getProductResList(String prodId);
+	
+	
 }

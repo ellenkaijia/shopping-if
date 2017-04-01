@@ -17,9 +17,15 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id,prodId,code_id,prod_name,prod_detail,prod_type_name,
+		id,prod_id,code_id,prod_name,prod_detail,prod_type_name,
 		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time
 	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from t_product
+		where id = #{id}
+	</select>
 	
 	<insert id="insert">
 		insert into t_product (
@@ -31,5 +37,54 @@
 			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now()
 		)
 	</insert>
+	
+	<select id="dataGrid" parameterType="page" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product where 1=1
+		<if test="params.prodName != null and params.prodName != ''">
+			and prod_name LIKE concat('%',#{params.prodName},'%') 
+		</if>
+		<if test="params.codeId != null and params.codeId != ''">
+			and code_id LIKE concat('%',#{params.codeId},'%') 
+		</if>
+	</select>
+	
+	<delete id="deleteByProductId" parameterType="java.lang.String">
+		delete from t_product where prod_id = #{prodId}
+	</delete>
+	
+	<update id="update" parameterType="com.manager.product.dto.ProductDTO">
+		update t_product
+		<set>
+			<if test="prodName != null and prodName != ''">
+				prod_name = #{prodName},
+			</if>
+			<if test="codeId != null and codeId != ''">
+				code_id = #{codeId},
+			</if>
+			<if test="prodDetail != null and prodDetail != ''">
+				prod_detail = #{prodDetail},
+			</if>
+			<if test="prodTypeName != null and prodTypeName != ''">
+				prod_type_name = #{prodTypeName},
+			</if>
+			<if test=" prodPrize != null">
+				 prod_prize = #{prodPrize},
+			</if>
+			<if test="prodFreeTime != null and prodFreeTime != ''">
+				prod_free_time = #{prodFreeTime},
+			</if>
+			<if test="prodSum != null">
+				prod_sum = #{prodSum},
+			</if>
+		</set>
+		where prod_id = #{prodId}
+	</update>
+	
+	<update id = "updateProductStatus" parameterType="java.lang.String">
+	 	update t_product 
+	 	set status = 1
+	 	where prod_id = #{prodId}
+	</update>
 	
 </mapper>
