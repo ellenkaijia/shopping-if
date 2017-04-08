@@ -27,4 +27,14 @@
     <dubbo:service
             interface="com.mhdq.manager.api.service.productres.ProductResMsService"  timeout="50000"
             retries="0" ref="ProductResMsService" protocol="dubbo" /> 
+    <bean id="ProductLevelMsService"
+          class="com.mhdq.servicems.server.product.ProductLevelMsServiceImpl" />
+    <dubbo:service
+            interface="com.server.rpc.ProductLevelMsService"  timeout="50000"
+            retries="0" ref="ProductLevelMsService" protocol="dubbo" /> 
+    <bean id="SProductMsService"
+          class="com.mhdq.servicems.server.product.SProductMsServiceImpl" />
+    <dubbo:service
+            interface="com.server.rpc.SProductMsService"  timeout="50000"
+            retries="0" ref="SProductMsService" protocol="dubbo" /> 
 </beans>  

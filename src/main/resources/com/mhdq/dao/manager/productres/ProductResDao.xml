@@ -9,6 +9,14 @@
         <result column="prod_id" property="prodId" />
 	</resultMap>
 	
+	<resultMap type="com.server.dto.SProductResDTO" id="SBaseResultMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="res_id" property="resId" jdbcType="VARCHAR" />
+        <result column="res_parent_id" property="resParentId"  />
+        <result column="res_seq" property="resSeq"  />
+        <result column="prod_id" property="prodId" />
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		id,res_id,res_parent_id,res_seq,prod_id
 	</sql>
@@ -40,5 +48,17 @@
 		where prod_id = #{prodId}
 		order by res_seq
 	</select>
+	
+	<select id="getSProdResByProdId" parameterType="java.lang.String" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from t_product_res
+		where prod_id = #{prodId}
+		order by res_seq
+	</select>
+	
+	<delete id="deleteResByProdId" parameterType="java.lang.String">
+		delete from t_product_res
+		where prod_id = #{prodId}
+	</delete>
 	
 </mapper>

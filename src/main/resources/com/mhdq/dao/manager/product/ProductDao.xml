@@ -14,11 +14,41 @@
         <result column="prod_sell_sum" property="prodSellSum" />
         <result column="status" property="status" />
         <result column="create_time" property="createTime" />
+        <result column="band_id" property="bandId"/>
+        <result column="prod_type_code" property="prodTypeCode"/>
+        <result column="is_new" property="isNew"/>
+        <result column="is_hot" property="isHot"/>
+	</resultMap>
+	
+	<resultMap type="com.manager.product.dto.ProductBandDTO" id="BandMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="band_name" property="bandName"/>
+        <result column="band_id" property="bandId"/>
+	</resultMap>
+	
+	<resultMap type="com.server.dto.SProductDTO" id="SBaseResultMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="prod_id" property="prodId" jdbcType="VARCHAR" />
+        <result column="code_id" property="codeId"  />
+        <result column="prod_name" property="prodName"  />
+        <result column="prod_detail" property="prodDetail" />
+        <result column="prod_type_name" property="prodTypeName" />
+        <result column="prod_prize" property="prodPrize" />
+        <result column="prod_free_time" property="prodFreeTime" />
+        <result column="prod_sum" property="prodSum" />
+        <result column="prod_sell_sum" property="prodSellSum" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="band_id" property="bandId"/>
+        <result column="prod_type_code" property="prodTypeCode"/>
+        <result column="is_new" property="isNew"/>
+        <result column="is_hot" property="isHot"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 		id,prod_id,code_id,prod_name,prod_detail,prod_type_name,
-		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time
+		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time,band_id,prod_type_code,
+		is_new,is_hot
 	</sql>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -34,7 +64,8 @@
 			#{id,jdbcType=BIGINT},#{prodId, jdbcType=VARCHAR},#{codeId,jdbcType=VARCHAR},
 			#{prodName,jdbcType=VARCHAR},#{prodDetail,jdbcType=VARCHAR},#{prodTypeName,jdbcType=VARCHAR},
 			#{prodPrize,jdbcType=DECIMAL},#{prodFreeTime,jdbcType=VARCHAR},#{prodSum,jdbcType=INTEGER},
-			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now()
+			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now(),#{bandId,jdbcType=VARCHAR},#{prodTypeCode,jdbcType=INTEGER},
+			#{isNew,jdbcType=INTEGER},#{isHot,jdbcType=INTEGER}
 		)
 	</insert>
 	
@@ -46,6 +77,12 @@
 		</if>
 		<if test="params.codeId != null and params.codeId != ''">
 			and code_id LIKE concat('%',#{params.codeId},'%') 
+		</if>
+		<if test="params.isNew != null">
+			and is_new = #{params.isNew}
+		</if>
+		<if test="params.isHot != null">
+			and is_hot = #{params.isHot}
 		</if>
 	</select>
 	
@@ -86,5 +123,71 @@
 	 	set status = 1
 	 	where prod_id = #{prodId}
 	</update>
+	
+	<insert id="addBand" parameterType="com.manager.product.dto.ProductBandDTO">
+		insert into t_band
+		(id,band_name,band_id)
+		values(#{id,jdbcType=BIGINT},#{bandName,jdbcType=VARCHAR},#{bandId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="showBand" parameterType="page" resultMap="BandMap">
+		select id,band_name,band_id from t_band where 1=1
+		<if test="params.bandName != null and params.bandName != ''">
+			and band_name LIKE concat('%',#{params.bandName},'%') 
+		</if>
+	</select>
+	
+	<select id="getProductBandList" resultMap="BandMap">
+		select id,band_name,band_id from t_band
+	</select>
+	
+	<update id="gonewById" parameterType="java.lang.Long">
+		update t_product set
+		is_new = 1
+		where id = #{id}
+	</update>
+	
+	<update id="cacelgonewById" parameterType="java.lang.Long">
+		update t_product set
+		is_new = 0
+		where id = #{id}
+	</update>
+	
+	<update id="gohotById" parameterType="java.lang.Long">
+		update t_product set
+		is_hot = 1
+		where id = #{id}
+	</update>
+	
+	<update id="cacelgohotById" parameterType="java.lang.Long">
+		update t_product set
+		is_hot = 0
+		where id = #{id}
+	</update>
+	
+	<select id="getProductByProdTypeCode" parameterType="java.lang.Integer" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product
+		where prod_type_code = #{prodTypeCode}
+		order by create_time desc limit 9
+	</select>
+	
+	<select id="getProductByProdId" parameterType="java.lang.String" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product
+		where prod_id = #{prodId}
+	</select>
+	
+	<select id="getproductByIsNew" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" />
+		from t_product
+		where is_new = #{isNew}
+	</select>
+	
+	<select id="getproductByIsHot" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" />
+		from t_product
+		where is_hot = #{isHot}
+	</select>
 	
 </mapper>
