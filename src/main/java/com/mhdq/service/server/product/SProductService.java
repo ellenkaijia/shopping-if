@@ -2,6 +2,7 @@ package com.mhdq.service.server.product;
 
 import java.util.List;
 
+import com.server.dto.SCurentPageDTO;
 import com.server.dto.SProductLevelDTO;
 
 /**  
@@ -14,7 +15,7 @@ public interface SProductService {
 
 	SProductLevelDTO getProductDetail(String prodId);
 	
-	List<SProductLevelDTO> getProductHot();
+	List<SProductLevelDTO> getProductHot(SCurentPageDTO sCurentPageDTO);
 	
-	List<SProductLevelDTO> getProductNew();
+	List<SProductLevelDTO> getProductNew(SCurentPageDTO sCurentPageDTO);
 }

@@ -18,6 +18,7 @@
         <result column="prod_type_code" property="prodTypeCode"/>
         <result column="is_new" property="isNew"/>
         <result column="is_hot" property="isHot"/>
+        <result column="comment_count" property="commentCount"/>
 	</resultMap>
 	
 	<resultMap type="com.manager.product.dto.ProductBandDTO" id="BandMap">
@@ -43,12 +44,13 @@
         <result column="prod_type_code" property="prodTypeCode"/>
         <result column="is_new" property="isNew"/>
         <result column="is_hot" property="isHot"/>
+        <result column="comment_count" property="commentCount"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 		id,prod_id,code_id,prod_name,prod_detail,prod_type_name,
 		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time,band_id,prod_type_code,
-		is_new,is_hot
+		is_new,is_hot, comment_count
 	</sql>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -65,7 +67,7 @@
 			#{prodName,jdbcType=VARCHAR},#{prodDetail,jdbcType=VARCHAR},#{prodTypeName,jdbcType=VARCHAR},
 			#{prodPrize,jdbcType=DECIMAL},#{prodFreeTime,jdbcType=VARCHAR},#{prodSum,jdbcType=INTEGER},
 			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now(),#{bandId,jdbcType=VARCHAR},#{prodTypeCode,jdbcType=INTEGER},
-			#{isNew,jdbcType=INTEGER},#{isHot,jdbcType=INTEGER}
+			#{isNew,jdbcType=INTEGER},#{isHot,jdbcType=INTEGER},#{commentCount,jdbcType=INTEGER}
 		)
 	</insert>
 	
@@ -178,16 +180,35 @@
 		where prod_id = #{prodId}
 	</select>
 	
-	<select id="getproductByIsNew" parameterType="java.lang.Integer">
+	<select id="getproductByIsNew" parameterType="java.lang.Integer" resultMap="SBaseResultMap">
 		select <include refid="Base_Column_List" />
 		from t_product
 		where is_new = #{isNew}
 	</select>
 	
-	<select id="getproductByIsHot" parameterType="java.lang.Integer">
+	<select id="getproductByIsHot" parameterType="java.lang.Integer" resultMap="SBaseResultMap">
 		select <include refid="Base_Column_List" />
 		from t_product
 		where is_hot = #{isHot}
+	</select>
+	
+	<select id="getproductByParamsHot" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product 	where is_hot = 1
+		order by ${orderBy} ${whatOrder}
+		limit #{start}, #{end}
+	</select>
+	
+	<select id="getproductByParamsNew" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product 	where is_new = 1
+		order by ${orderBy} ${whatOrder}
+		limit #{start}, #{end}
+	</select>
+	
+	
+	<select id="getCountProduct" resultType="java.lang.Integer">
+		select count(*) from t_product
 	</select>
 	
 </mapper>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.service.server.product.SProductService;
+import com.server.dto.SCurentPageDTO;
 import com.server.dto.SProductDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SProductResDTO;
@@ -86,14 +87,69 @@ public class SProductServiceImpl implements SProductService {
 		sP.setProdTypeName(p.getProdTypeName());
 		sP.setStatus(p.getStatus());
 	}
+	
+	private void wrapIntiDBCu(SProductLevelDTO sP, SProductDTO p, SCurentPageDTO sCurentPageDTO, int listTotal) {
+
+		sP.setId(p.getId());
+		sP.setBandId(p.getBandId());
+		sP.setCodeId(p.getCodeId());
+		sP.setCreateTime(p.getCreateTime());
+		sP.setIsHot(p.getIsHot());
+		sP.setIsNew(p.getIsNew());
+		sP.setProdDetail(p.getProdDetail());
+		sP.setProdFreeTime(p.getProdFreeTime());
+		sP.setProdId(p.getProdId());
+		sP.setProdName(p.getProdName());
+		sP.setProdPrize(p.getProdPrize());
+		sP.setProdSellSum(p.getProdSellSum());
+		sP.setProdSum(p.getProdSum());
+		sP.setProdTypeCode(p.getProdTypeCode());
+		sP.setProdTypeName(p.getProdTypeName());
+		sP.setStatus(p.getStatus());
+		sP.setOrders(sCurentPageDTO.getOrders());
+		sP.setCurPageNO(sCurentPageDTO.getCurPageNO());
+		sP.setCurPageNum(sCurentPageDTO.getCurPageNum());
+		sP.setListTotal(listTotal);
+	}
 
 	@Override
-	public List<SProductLevelDTO> getProductHot() {
+	public List<SProductLevelDTO> getProductHot(SCurentPageDTO sCurentPageDTO) {
 
-		logger.info("******调用ProductLevelServiceImpl的getProductLevelByCode方法*******");
+		logger.info("******调用SProductServiceImpl的getProductHot方法*******");
 
-		List<SProductDTO> result = productDao.getProductByProdTypeCode(prodTypeCode);
-
+		String[] orders = sCurentPageDTO.getOrders().split("[,，]");
+		switch (orders[0]) {
+		case "date":
+			orders[0] = "create_time";
+			break;
+		case "cash":
+			orders[0] = "prod_prize";
+			break;
+		case "buys":
+			orders[0] = "prod_sell_sum";
+			break;
+		case "comments":
+			orders[0] = "comment_count";
+			break;
+		default:
+			orders[0] = "create_time";
+			orders[1] = "desc";
+			break;
+		}
+		
+		List<SProductDTO> result = productDao.getproductByParamsHot(orders[0], orders[1], sCurentPageDTO.getCurPageNO() * sCurentPageDTO.getCurPageNum() , sCurentPageDTO.getCurPageNum());
+		
+		for(SProductDTO ss : result) {
+			logger.info("SProductDTO :" + ss.getProdName());
+		}
+		
+		int count = productDao.getCountProduct();
+		
+		int listTotal = count / sCurentPageDTO.getCurPageNum();
+		if(count % sCurentPageDTO.getCurPageNum() != 0) {
+			listTotal ++;
+		}
+		
 		List<SProductLevelDTO> returnList = new ArrayList<>();
 		SProductLevelDTO sProductLevelDTO = null;
 		List<String> imgUrls = null;
@@ -104,7 +160,7 @@ public class SProductServiceImpl implements SProductService {
 				sProductLevelDTO = new SProductLevelDTO();
 				imgUrls = new ArrayList<>();
 				// 开始赋值
-				this.wrapIntiDB(sProductLevelDTO, sProductDTO);
+				this.wrapIntiDBCu(sProductLevelDTO, sProductDTO, sCurentPageDTO, listTotal);
 
 				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
 				if (CollectionUtils.isEmpty(resList)) {
@@ -124,15 +180,88 @@ public class SProductServiceImpl implements SProductService {
 		}
 
 		return returnList;
-
-		productDao.getproductByIsHot(1);
-		return null;
 	}
 
 	@Override
-	public List<SProductLevelDTO> getProductNew() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<SProductLevelDTO> getProductNew(SCurentPageDTO sCurentPageDTO) {
+		logger.info("******调用SProductServiceImpl的getProductNew方法*******");
+
+		String[] orders = sCurentPageDTO.getOrders().split("[,，]");
+		switch (orders[0]) {
+		case "date":
+			orders[0] = "create_time";
+			break;
+		case "cash":
+			orders[0] = "prod_prize";
+			break;
+		case "buys":
+			orders[0] = "prod_sell_sum";
+			break;
+		case "comments":
+			orders[0] = "comment_count";
+			break;
+		default:
+			orders[0] = "create_time";
+			orders[1] = "desc";
+			break;
+		}
+		
+		List<SProductDTO> result = productDao.getproductByParamsNew(orders[0], orders[1], sCurentPageDTO.getCurPageNO() * sCurentPageDTO.getCurPageNum() , sCurentPageDTO.getCurPageNum());
+		
+		for(SProductDTO ss : result) {
+			logger.info("SProductDTO :" + ss.getProdName());
+		}
+		
+		int count = productDao.getCountProduct();
+		
+		int listTotal = count / sCurentPageDTO.getCurPageNum();
+		if(count % sCurentPageDTO.getCurPageNum() != 0) {
+			listTotal ++;
+		}
+		
+		List<SProductLevelDTO> returnList = new ArrayList<>();
+		SProductLevelDTO sProductLevelDTO = null;
+		List<String> imgUrls = null;
+
+		if (!CollectionUtils.isEmpty(result)) {
+			logger.info("******开始构造SProductLevelDTO循环*******");
+			for (SProductDTO sProductDTO : result) {
+				sProductLevelDTO = new SProductLevelDTO();
+				imgUrls = new ArrayList<>();
+				// 开始赋值
+				this.wrapIntiDBCu(sProductLevelDTO, sProductDTO, sCurentPageDTO, listTotal);
+
+				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
+				if (CollectionUtils.isEmpty(resList)) {
+					returnList.add(sProductLevelDTO);
+					logger.info("******没有找到对应的图片资源******");
+					continue;
+				}
+				for (int i = 1; i < resList.size(); i++) {
+					StringBuffer stringBuffer = new StringBuffer();
+					stringBuffer.append("picResource" + File.separator + resList.get(i).getResParentId()
+							+ File.separator + resList.get(i).getResId() + ".jpg");
+					imgUrls.add(stringBuffer.toString());
+				}
+				sProductLevelDTO.setImgUrls(imgUrls);
+				returnList.add(sProductLevelDTO);
+			}
+		}
+
+		return returnList;
+	}
+	
+	public static void main(String args[]) {
+		String[] orders = "date,asc".split("[,，]");
+		switch (orders[0]) {
+		case "date":
+			orders[0] = "dadadad";
+			break; 
+
+		default:
+			break;
+		}
+		System.out.println(orders[0]);
 	}
 
 }

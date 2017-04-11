@@ -40,4 +40,10 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	List<SProductDTO> getproductByIsNew(@Param("isNew") int isNew);
 	
 	List<SProductDTO> getproductByIsHot(@Param("isHot") int isHot);
+	
+	List<SProductDTO> getproductByParamsHot(@Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
+	
+	List<SProductDTO> getproductByParamsNew(@Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
+	
+	int getCountProduct();
 }

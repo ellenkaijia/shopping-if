@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mhdq.service.server.product.SProductService;
+import com.server.dto.SCurentPageDTO;
 import com.server.dto.SProductLevelDTO;
+import com.server.dto.SProductTalkDTO;
 import com.server.rpc.SProductMsService;
 
 /**  
@@ -30,13 +32,17 @@ public class SProductMsServiceImpl implements SProductMsService {
 	}
 
 	@Override
-	public List<SProductLevelDTO> getProductHot() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<SProductLevelDTO> getProductHot(SCurentPageDTO sCurentPageDTO) {
+		return sProductService.getProductHot(sCurentPageDTO);
 	}
 
 	@Override
-	public List<SProductLevelDTO> getProductNew() {
+	public List<SProductLevelDTO> getProductNew(SCurentPageDTO sCurentPageDTO) {
+		return sProductService.getProductNew(sCurentPageDTO);
+	}
+
+	@Override
+	public List<SProductTalkDTO> getProductTalk(String prodId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
