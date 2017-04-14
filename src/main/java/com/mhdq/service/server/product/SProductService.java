@@ -18,4 +18,8 @@ public interface SProductService {
 	List<SProductLevelDTO> getProductHot(SCurentPageDTO sCurentPageDTO);
 	
 	List<SProductLevelDTO> getProductNew(SCurentPageDTO sCurentPageDTO);
+	
+	List<SProductLevelDTO> getBandList(String bandId, SCurentPageDTO sCurentPageDTO);
+	
+	List<SProductLevelDTO> getSortList(String sortId, SCurentPageDTO sCurentPageDTO);
 }

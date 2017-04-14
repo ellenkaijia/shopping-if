@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.SmsLogDao">
+	
+	<resultMap type="com.mhdq.sms.SmsLogDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="msg_info" property="msgInfo"/>
+        <result column="msg_code" property="msgCode"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_phone,msg_info,msg_code,status,create_time
+	</sql>
+	
+	<insert id="insertSmsLog" parameterType="com.mhdq.sms.SmsLogDTO">
+		insert into t_smslog (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{userPhone,jdbcType=VARCHAR},
+			#{msgInfo,jdbcType=VARCHAR},
+			#{msgCode,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER},
+			now()
+		)
+	</insert>
+	
+	<select id="getRecentMsgCode" parameterType="java.lang.String" resultMap="BaseMap">
+		select * from t_smslog where user_phone = #{userPhone}
+		order by create_time desc limit 1
+	</select>
+	
+</mapper>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.manager.product.dto.ProductBandDTO;
 import com.manager.product.dto.ProductDTO;
+import com.manager.product.dto.SortDTO;
 import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.exception.ServiceException;
 import com.mhdq.manager.api.service.product.ProductMsService;
@@ -118,6 +119,23 @@ public class ProductMsServiceImpl implements ProductMsService {
 		RpcRespDTO<Integer> result = new RpcRespDTO<>();
 		Integer ret = productService.cacelgohot(id);
 		return result.buildSuccessResp(ret);
+	}
+
+	@Override
+	public RpcRespDTO<String> addSort(SortDTO sortDTO) {
+		RpcRespDTO<String> result = new RpcRespDTO<>();
+		String ret = productService.addSort(sortDTO);
+		return result.buildSuccessResp(ret);
+	}
+
+	@Override
+	public DataGrid showSort(SortDTO sortDTO, Page page) {
+		return productService.showSort(sortDTO, page);
+	}
+
+	@Override
+	public List<SortDTO> getProductSortList() {
+		return productService.getProductSortList();
 	}
 
 }

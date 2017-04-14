@@ -47,4 +47,14 @@ public class SProductMsServiceImpl implements SProductMsService {
 		return null;
 	}
 
+	@Override
+	public List<SProductLevelDTO> getBandList(String bandId, SCurentPageDTO sCurentPageDTO) {
+		return sProductService.getBandList(bandId, sCurentPageDTO);
+	}
+
+	@Override
+	public List<SProductLevelDTO> getSortList(String sortId, SCurentPageDTO sCurentPageDTO) {
+		return sProductService.getSortList(sortId, sCurentPageDTO);
+	}
+
 }

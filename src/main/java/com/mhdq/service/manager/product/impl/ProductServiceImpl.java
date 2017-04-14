@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.manager.product.dto.ProductBandDTO;
 import com.manager.product.dto.ProductDTO;
 import com.manager.product.dto.ProductResDTO;
+import com.manager.product.dto.SortDTO;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.exception.ServiceException;
@@ -38,7 +39,9 @@ public class ProductServiceImpl implements ProductService {
 	public String createProduct(ProductDTO productDTO) throws ServiceException {
 		logger.info("******正在调用产品管理模块的第二层服务(增加一个产品)*******");
 		String prodId = GenerateCode.generateProductId();  //生成唯一的产品编号
+		String sortName = productDao.getSortBySortId(productDTO.getSortId()).getSortName();
 		this.wrapperInitToDB(productDTO,prodId); //包装几个默认参数
+		productDTO.setProdTypeName(sortName);
 		int count = productDao.insert(productDTO);
 		if(count >= 1) {
 			return prodId;
@@ -134,6 +137,32 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Integer cacelgohot(Long id) {
 		return productDao.cacelgohotById(id);
+	}
+
+	@Override
+	public String addSort(SortDTO sortDTO) {
+		String sortId = GenerateCode.generateSortId();
+		sortDTO.setSortId(sortId);
+		int ret = productDao.addSort(sortDTO);
+		if(ret == 1) {
+			return sortId;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public DataGrid showSort(SortDTO sortDTO, Page page) {
+		page.setParams(sortDTO);
+		List<SortDTO> list = productDao.showSort(page);
+		return Page.getDataGrid(page, list, SortDTO.class);
+	}
+
+	@Override
+	public List<SortDTO> getProductSortList() {
+		List<SortDTO> list = new ArrayList<>();
+		list = productDao.getProductSortList();
+		return list;
 	}
 
 

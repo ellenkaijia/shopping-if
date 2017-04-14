@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.manager.product.dto.ProductBandDTO;
 import com.manager.product.dto.ProductDTO;
+import com.manager.product.dto.SortDTO;
 import com.mhdq.exception.ServiceException;
 import com.server.api.easyui.DataGrid;
 import com.server.api.easyui.Page;
@@ -39,5 +40,11 @@ public interface ProductService {
 	Integer gohot(Long id);
 	
 	Integer cacelgohot(Long id);
+	
+	String addSort(SortDTO sortDTO);
+	
+	DataGrid showSort(SortDTO sortDTO, Page page);
+	
+	List<SortDTO> getProductSortList();
 	
 }

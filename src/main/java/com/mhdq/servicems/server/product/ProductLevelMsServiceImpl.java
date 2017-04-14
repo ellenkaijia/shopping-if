@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mhdq.service.server.product.ProductLevelService;
-import com.server.dto.SProductDTO;
+import com.server.dto.SBandShowDTO;
 import com.server.dto.SProductLevelDTO;
+import com.server.dto.SortShowDTO;
 import com.server.rpc.ProductLevelMsService;
 
 /**  
@@ -23,6 +24,16 @@ public class ProductLevelMsServiceImpl implements ProductLevelMsService{
 	@Override
 	public List<SProductLevelDTO> getProductLevelByCode(int prodTypeCode) {
 		return productLevelService.getProductLevelByCode(prodTypeCode);
+	}
+
+	@Override
+	public List<SBandShowDTO> getProductBandAll() {
+		return productLevelService.getProductBandAll();
+	}
+
+	@Override
+	public List<SortShowDTO> getSortAll() {
+		return productLevelService.getSortAll();
 	}
 
 }

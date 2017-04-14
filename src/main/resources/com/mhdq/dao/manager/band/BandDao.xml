@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.band.BandDao">
+	
+	<sql id="Base_Column_List">
+		id,prod_id,code_id,prod_name,prod_detail,prod_type_name,
+		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time,band_id,prod_type_code,
+		is_new,is_hot, comment_count
+	</sql>
+	
+</mapper>

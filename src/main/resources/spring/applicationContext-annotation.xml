@@ -7,4 +7,5 @@
     
     <context:component-scan base-package="com.mhdq.service.*" />
     
+    <bean id="smsService" class="com.mhdq.sms.impl.SmsServiceImpl"/>
 </beans>

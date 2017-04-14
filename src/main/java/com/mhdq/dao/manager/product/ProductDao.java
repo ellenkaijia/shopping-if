@@ -3,12 +3,16 @@ package com.mhdq.dao.manager.product;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.annotations.Sort;
 
 import com.manager.product.dto.ProductBandDTO;
 import com.manager.product.dto.ProductDTO;
+import com.manager.product.dto.SortDTO;
 import com.mhdq.dao.manager.BaseDao;
 import com.server.api.easyui.Page;
+import com.server.dto.SBandDTO;
 import com.server.dto.SProductDTO;
+import com.server.dto.SSortDTO;
 
 public interface ProductDao extends BaseDao<ProductDTO> {
 
@@ -20,7 +24,13 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	
 	int addBand(ProductBandDTO productBandDTO);
 	
+	int addSort(SortDTO sortDTO);
+	
 	List<ProductBandDTO> showBand(Page page);
+	
+	List<SortDTO> showSort(Page page);
+	
+	SortDTO getSortBySortId(@Param("sortId") String sortId);
 	
 	List<ProductBandDTO> getProductBandList();
 	
@@ -45,5 +55,15 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	
 	List<SProductDTO> getproductByParamsNew(@Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
 	
+	List<SProductDTO> getproductByParamsBand(@Param("bandId") String bandId, @Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
+	
+	List<SProductDTO> getproductByParamsSort(@Param("sortId") String sortId, @Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
+	
 	int getCountProduct();
+	
+	List<SBandDTO> selectAllBand();
+	
+	List<SortDTO> getProductSortList();
+	
+	List<SSortDTO> selectAllSort();
 }

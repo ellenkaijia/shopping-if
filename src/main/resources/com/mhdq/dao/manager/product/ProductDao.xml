@@ -19,6 +19,7 @@
         <result column="is_new" property="isNew"/>
         <result column="is_hot" property="isHot"/>
         <result column="comment_count" property="commentCount"/>
+        <result column="sort_id" property="sortId"/>
 	</resultMap>
 	
 	<resultMap type="com.manager.product.dto.ProductBandDTO" id="BandMap">
@@ -26,6 +27,25 @@
         <result column="band_name" property="bandName"/>
         <result column="band_id" property="bandId"/>
 	</resultMap>
+	
+	<resultMap type="com.manager.product.dto.SortDTO" id="SortMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="sort_name" property="sortName"/>
+        <result column="sort_id" property="sortId"/>
+	</resultMap>
+	
+	<resultMap type="com.server.dto.SSortDTO" id="SSortMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="sort_name" property="sortName"/>
+        <result column="sort_id" property="sortId"/>
+	</resultMap>	
+	
+	<resultMap type="com.server.dto.SBandDTO" id="SBandMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="band_name" property="bandName"/>
+        <result column="band_id" property="bandId"/>
+	</resultMap>
+	
 	
 	<resultMap type="com.server.dto.SProductDTO" id="SBaseResultMap">
 		<id column="id" property="id" jdbcType="BIGINT"/>
@@ -45,12 +65,13 @@
         <result column="is_new" property="isNew"/>
         <result column="is_hot" property="isHot"/>
         <result column="comment_count" property="commentCount"/>
+        <result column="sort_id" property="sortId"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 		id,prod_id,code_id,prod_name,prod_detail,prod_type_name,
 		prod_prize,prod_free_time,prod_sum,prod_sell_sum,status,create_time,band_id,prod_type_code,
-		is_new,is_hot, comment_count
+		is_new,is_hot, comment_count, sort_id
 	</sql>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -67,7 +88,7 @@
 			#{prodName,jdbcType=VARCHAR},#{prodDetail,jdbcType=VARCHAR},#{prodTypeName,jdbcType=VARCHAR},
 			#{prodPrize,jdbcType=DECIMAL},#{prodFreeTime,jdbcType=VARCHAR},#{prodSum,jdbcType=INTEGER},
 			#{prodSellSum,jdbcType=INTEGER},#{status,jdbcType=TINYINT},now(),#{bandId,jdbcType=VARCHAR},#{prodTypeCode,jdbcType=INTEGER},
-			#{isNew,jdbcType=INTEGER},#{isHot,jdbcType=INTEGER},#{commentCount,jdbcType=INTEGER}
+			#{isNew,jdbcType=INTEGER},#{isHot,jdbcType=INTEGER},#{commentCount,jdbcType=INTEGER},#{sortId,jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -131,6 +152,18 @@
 		(id,band_name,band_id)
 		values(#{id,jdbcType=BIGINT},#{bandName,jdbcType=VARCHAR},#{bandId,jdbcType=VARCHAR})
 	</insert>
+	
+	<insert id="addSort" parameterType="com.manager.product.dto.SortDTO">
+		insert into t_sort (id,sort_id,sort_name)
+		values(#{id,jdbcType=BIGINT},#{sortId,jdbcType=VARCHAR},#{sortName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="showSort" parameterType="page" resultMap="SortMap">
+		select id,sort_id,sort_name from t_sort where 1=1
+		<if test="params.sortName != null and params.sortName != ''">
+			and band_name LIKE concat('%',#{params.sortName},'%') 
+		</if>
+	</select>
 	
 	<select id="showBand" parameterType="page" resultMap="BandMap">
 		select id,band_name,band_id from t_band where 1=1
@@ -206,9 +239,40 @@
 		limit #{start}, #{end}
 	</select>
 	
+	<select id="getproductByParamsSort" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product where sort_id = #{sortId}
+		order by ${orderBy} ${whatOrder}
+		limit #{start}, #{end}
+	</select>
+	
 	
 	<select id="getCountProduct" resultType="java.lang.Integer">
 		select count(*) from t_product
+	</select>
+	
+	<select id="selectAllBand" resultMap="SBandMap">
+		select id,band_name,band_id from t_band
+	</select>
+	
+	<select id="selectAllSort" resultMap="SSortMap">
+		select * from t_sort
+	</select>
+	
+	<select id="getproductByParamsBand" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product 	where band_id = #{bandId}
+		order by ${orderBy} ${whatOrder}
+		limit #{start}, #{end}
+	</select>
+	
+	<select id="getProductSortList" resultMap="SortMap">
+		select * from t_sort
+	</select>
+	
+	<select id="getSortBySortId" resultMap="SortMap" parameterType="java.lang.String">
+		select * from t_sort
+		where sort_id = #{sortId}
 	</select>
 	
 </mapper>
