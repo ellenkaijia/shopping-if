@@ -17,7 +17,7 @@
 	<insert id="insertUser" parameterType="com.server.dto.SUserDTO">
 		insert into t_user (<include refid="Base_Column_List" />)
 		values (
-			#{id,jdbcType=BIGINT),
+			#{id,jdbcType=BIGINT},
 			#{userId,jdbcType=VARCHAR},
 			#{userName,jdbcType=VARCHAR},
 			#{userPhone,jdbcType=VARCHAR},
@@ -36,5 +36,12 @@
 		and user_password = #{userPassword,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="selectUserId" parameterType="com.server.dto.SUserDTO" resultMap="BaseMap">
+		select * from t_user where user_phone = #{userPhone,jdbcType=VARCHAR} limit 1
+	</select>
+	
+	<select id="selectAllByUid" parameterType="java.lang.String" resultMap="BaseMap">
+		select * from t_user where user_id = #{userId}
+	</select>
 	
 </mapper>

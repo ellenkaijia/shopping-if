@@ -1,6 +1,7 @@
 package com.mhdq.service.server.product;
 
 import com.server.dto.SUserDTO;
+import com.server.dto.ShopCartDTO;
 
 /**  
 * 类说明   
@@ -17,4 +18,12 @@ public interface UserService {
 	Integer checkPassword(SUserDTO sUserDTO);
 	
 	Integer registerGo(SUserDTO sUserDTO);
+	
+	String queryUserId(SUserDTO sUserDTO);
+	
+	Integer addShopCart(ShopCartDTO shopCartDTO);
+	
+	Integer getMyFavorCount(String userId);
+	
+	SUserDTO getUserAllByUid(String userId);
 }

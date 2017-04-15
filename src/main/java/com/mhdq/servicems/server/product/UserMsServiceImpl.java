@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mhdq.service.server.product.UserService;
 import com.server.dto.SUserDTO;
+import com.server.dto.ShopCartDTO;
 import com.server.rpc.UserMsService;
 
 /**  
@@ -35,6 +36,26 @@ public class UserMsServiceImpl implements UserMsService {
 	@Override
 	public Integer registerGo(SUserDTO sUserDTO) {
 		return userService.registerGo(sUserDTO);
+	}
+
+	@Override
+	public String queryUserId(SUserDTO sUserDTO) {
+		return userService.queryUserId(sUserDTO);
+	}
+
+	@Override
+	public Integer addShopCart(ShopCartDTO shopCartDTO) {
+		return userService.addShopCart(shopCartDTO);
+	}
+
+	@Override
+	public Integer getMyFavorCount(String userId) {
+		return userService.getMyFavorCount(userId);
+	}
+
+	@Override
+	public SUserDTO getUserAllByUid(String userId) {
+		return userService.getUserAllByUid(userId);
 	}
 
 }

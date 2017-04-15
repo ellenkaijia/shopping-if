@@ -1,5 +1,7 @@
 package com.mhdq.dao.manager;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.server.dto.SUserDTO;
 
 /**  
@@ -15,4 +17,8 @@ public interface UserDao {
 	SUserDTO selectByPhone(String phone);
 	
 	SUserDTO selectByPhonePwd(SUserDTO sUserDTO);
+	
+	SUserDTO selectUserId(SUserDTO sUserDTO);
+	
+	SUserDTO selectAllByUid(@Param("userId") String userId);
 }

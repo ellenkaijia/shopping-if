@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mhdq.dao.manager.FavorDao;
+import com.mhdq.dao.manager.MarketCarDao;
 import com.mhdq.dao.manager.SmsLogDao;
 import com.mhdq.dao.manager.UserDao;
 import com.mhdq.rpc.RpcCommonConstant;
@@ -14,6 +16,7 @@ import com.mhdq.sms.SmsLogDTO;
 import com.mhdq.sms.SmsService;
 import com.server.api.util.GenerateCode;
 import com.server.dto.SUserDTO;
+import com.server.dto.ShopCartDTO;
 
 /**  
 * 类说明   
@@ -34,6 +37,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private SmsLogDao smsLogDao;
+	
+	@Autowired
+	private MarketCarDao marketCarDao;
+	
+	@Autowired
+	private FavorDao favorDao;
 
 	@Override
 	public boolean checkPhone(String phone) {
@@ -83,6 +92,35 @@ public class UserServiceImpl implements UserService {
 			return 0;
 		}
 		return 2;
+	}
+
+	@Override
+	public String queryUserId(SUserDTO sUserDTO) {
+		return userDao.selectUserId(sUserDTO).getUserId();
+	}
+
+	@Override
+	public Integer addShopCart(ShopCartDTO shopCartDTO) {
+		
+		ShopCartDTO shop = marketCarDao.selectByUIdProdId(shopCartDTO);
+		if(shop != null) {
+			return -99;   //数据已经存在
+		}
+		int i = marketCarDao.insertMarketCar(shopCartDTO);
+		if(i == 1) {
+			return 0;
+		}
+		return -98;
+	}
+
+	@Override
+	public Integer getMyFavorCount(String userId) {
+		return favorDao.selectCountByUId(userId);
+	}
+
+	@Override
+	public SUserDTO getUserAllByUid(String userId) {
+		return userDao.selectAllByUid(userId);
 	}
 
 }

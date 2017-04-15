@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.FavorDao">
+	
+	<resultMap type="com.server.dto.SFavorDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="prod_id" property="prodId"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_id,prod_id
+	</sql>
+	
+	<insert id="insertFavor" parameterType="com.server.dto.SFavorDTO">
+		insert into t_favor (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{userId,jdbcType=VARCHAR},
+			#{prodId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_favor where user_id = #{userId}
+	</select>
+	
+	<select id="selectByUIdProdId" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_favor where user_id = #{userId} and prod_id = #{prodId}
+	</select>
+	
+	<delete id="deleteProdCountByUIdProdId">
+		delete from t_favor 
+		where user_id = #{userId} and prod_id = #{prodId}
+	</delete>
+	
+	<select id="selectCountByUId" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(*) 
+		from t_favor where user_id = #{userId}
+	</select>
+	
+</mapper>

@@ -66,4 +66,6 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	List<SortDTO> getProductSortList();
 	
 	List<SSortDTO> selectAllSort();
+	
+	SBandDTO selectBandByBandId(@Param("bandId") String bandId);
 }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.manager.product.dto.SortDTO;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.service.server.product.ProductLevelService;

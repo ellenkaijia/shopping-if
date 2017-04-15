@@ -255,6 +255,10 @@
 		select id,band_name,band_id from t_band
 	</select>
 	
+	<select id="selectBandByBandId" resultMap="SBandMap" parameterType="java.lang.String">
+		select id,band_name,band_id from t_band where band_id = #{bandId}
+	</select>
+	
 	<select id="selectAllSort" resultMap="SSortMap">
 		select * from t_sort
 	</select>
