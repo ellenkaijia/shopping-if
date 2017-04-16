@@ -39,4 +39,14 @@
 		where user_id = #{userId} and prod_id = #{prodId}
 	</update>
 	
+	<delete id="deleteProdByUIdProdId">
+		delete from t_marketcar where 
+		user_id = #{userId} and prod_id = #{prodId}
+	</delete>
+	
+	<select id="getMyShopCartCountByUId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from t_marketcar
+		where user_id = #{userId}
+	</select>
+	
 </mapper>

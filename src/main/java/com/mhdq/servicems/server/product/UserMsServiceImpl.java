@@ -1,8 +1,11 @@
 package com.mhdq.servicems.server.product;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mhdq.service.server.product.UserService;
+import com.server.dto.SProductLevelDTO;
 import com.server.dto.SUserDTO;
 import com.server.dto.ShopCartDTO;
 import com.server.rpc.UserMsService;
@@ -56,6 +59,36 @@ public class UserMsServiceImpl implements UserMsService {
 	@Override
 	public SUserDTO getUserAllByUid(String userId) {
 		return userService.getUserAllByUid(userId);
+	}
+
+	@Override
+	public Integer getMyShopCartCount(String userId) {
+		return userService.getMyShopCartCount(userId);
+	}
+
+	@Override
+	public Integer isFavorByUIdProdId(String userId, String prodId) {
+		return userService.isFavorByUIdProdId(userId, prodId);
+	}
+
+	@Override
+	public boolean addInterest(String userId, String prodId) {
+		return userService.addInterest(userId, prodId);
+	}
+
+	@Override
+	public boolean removeInterest(String userId, String prodId) {
+		return userService.removeInterest(userId, prodId);
+	}
+
+	@Override
+	public List<SProductLevelDTO> getMyCollectionList(String userId) {
+		return userService.getMyCollectionList(userId);
+	}
+
+	@Override
+	public boolean removeCollection(String userId, String prodId) {
+		return userService.removeCollection(userId,prodId);
 	}
 
 }

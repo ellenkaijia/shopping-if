@@ -51,4 +51,9 @@ public class ProductLevelMsServiceImpl implements ProductLevelMsService{
 		return shopCartService.changeShopCartNum(prodId, num, userId);
 	}
 
+	@Override
+	public boolean deleteShopCart(String prodId, String userId) {
+		return shopCartService.deleteShopCart(prodId, userId);
+	}
+
 }

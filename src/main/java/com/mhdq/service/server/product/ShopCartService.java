@@ -15,4 +15,6 @@ public interface ShopCartService {
 	List<ShopCarShowDTO> getShopCartList(String userId);
 	
 	boolean changeShopCartNum(String prodId, Integer num, String userId);
+	
+	boolean deleteShopCart(String prodId, String userId);
 }

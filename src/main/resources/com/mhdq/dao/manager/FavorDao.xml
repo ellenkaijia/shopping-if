@@ -31,7 +31,7 @@
 		from t_favor where user_id = #{userId} and prod_id = #{prodId}
 	</select>
 	
-	<delete id="deleteProdCountByUIdProdId">
+	<delete id="deleteFavorByUIdProdId">
 		delete from t_favor 
 		where user_id = #{userId} and prod_id = #{prodId}
 	</delete>

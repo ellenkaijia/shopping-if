@@ -1,5 +1,8 @@
 package com.mhdq.service.server.product;
 
+import java.util.List;
+
+import com.server.dto.SProductLevelDTO;
 import com.server.dto.SUserDTO;
 import com.server.dto.ShopCartDTO;
 
@@ -26,4 +29,17 @@ public interface UserService {
 	Integer getMyFavorCount(String userId);
 	
 	SUserDTO getUserAllByUid(String userId);
+	
+	Integer getMyShopCartCount(String userId);
+	
+	Integer isFavorByUIdProdId(String userId, String prodId);
+	
+	boolean addInterest(String userId, String prodId);
+	
+	boolean removeInterest(String userId, String prodId);
+	
+	List<SProductLevelDTO> getMyCollectionList(String userId);
+	
+	boolean removeCollection(String userId, String prodId);
+	
 }

@@ -20,7 +20,7 @@ public interface FavorDao {
 	
 	SFavorDTO selectByUIdProdId(@Param("userId") String userId, @Param("prodId") String prodId);
 	
-	int deleteProdCountByUIdProdId(@Param("userId") String userId, @Param("prodId") String prodId);
+	int deleteFavorByUIdProdId(@Param("userId") String userId, @Param("prodId") String prodId);
 	
 	int selectCountByUId(@Param("userId") String userId);
 	

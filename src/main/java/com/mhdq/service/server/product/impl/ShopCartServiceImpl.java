@@ -92,4 +92,13 @@ public class ShopCartServiceImpl implements ShopCartService {
 		return false;
 	}
 
+	@Override
+	public boolean deleteShopCart(String prodId, String userId) {
+		int i = marketCarDao.deleteProdByUIdProdId(userId, prodId);
+		if(i == 1) {
+			return true;
+		}
+		return false;
+	}
+
 }
