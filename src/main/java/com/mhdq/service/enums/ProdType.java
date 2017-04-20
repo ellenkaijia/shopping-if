@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public enum ProdType {
 	
 
-	STATUS_W(1, "冰箱"), STATUS_I(2, "电饭煲"), STATUS_U(3, "空调"), STATUS_S(4, "电视"), STATUS_F(5, "洗衣机"), STATUS_P(6, "厨卫"), STATUS_MISSING(
+	STATUS_W(1, "电视"), STATUS_I(2, "冰箱"), STATUS_U(3, "空调"), STATUS_S(4, "洗衣机"), STATUS_F(5, "厨房用品"), STATUS_P(6, "浴室用品"), STATUS_MISSING(
 			20, "其他");
 
 	public static ProdType getByStatusCode(String code) {

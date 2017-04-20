@@ -56,4 +56,9 @@ public class ProductLevelMsServiceImpl implements ProductLevelMsService{
 		return shopCartService.deleteShopCart(prodId, userId);
 	}
 
+	@Override
+	public List<SProductLevelDTO> searchForList(String keyword) {
+		return productLevelService.searchForList(keyword);
+	}
+
 }

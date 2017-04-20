@@ -17,4 +17,6 @@ public interface ShopCartService {
 	boolean changeShopCartNum(String prodId, Integer num, String userId);
 	
 	boolean deleteShopCart(String prodId, String userId);
+	
+	
 }

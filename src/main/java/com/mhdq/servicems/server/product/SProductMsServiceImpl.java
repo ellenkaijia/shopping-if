@@ -57,4 +57,9 @@ public class SProductMsServiceImpl implements SProductMsService {
 		return sProductService.getSortList(sortId, sCurentPageDTO);
 	}
 
+	@Override
+	public List<SProductLevelDTO> getMoreList(Integer more, SCurentPageDTO sCurentPageDTO) {
+		return sProductService.getMoreList(more, sCurentPageDTO);
+	}
+
 }

@@ -20,10 +20,14 @@ public interface MarketCarDao {
 	
 	ShopCartDTO selectByUIdProdId(ShopCartDTO shopCartDTO);
 	
+	ShopCartDTO selectByUIdProdIdTwo(@Param("userId") String userId, @Param("prodId") String prodId);
+	
 	int updateProdCountByUIdProdId(@Param("userId") String userId, @Param("prodId") String prodId, @Param("prodCount") Integer prodCount);
 	
 	int deleteProdByUIdProdId(@Param("userId") String userId, @Param("prodId") String prodId);
 	
 	int getMyShopCartCountByUId(@Param("userId") String userId);
+	
+	int deleteProdByUId(@Param("userId") String userId);
 	
 }

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.manager.product.dto.ProductBandDTO;
 import com.manager.product.dto.ProductDTO;
-import com.manager.product.dto.ProductResDTO;
 import com.manager.product.dto.SortDTO;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
@@ -40,8 +39,8 @@ public class ProductServiceImpl implements ProductService {
 		logger.info("******正在调用产品管理模块的第二层服务(增加一个产品)*******");
 		String prodId = GenerateCode.generateProductId();  //生成唯一的产品编号
 		String sortName = productDao.getSortBySortId(productDTO.getSortId()).getSortName();
-		this.wrapperInitToDB(productDTO,prodId); //包装几个默认参数
 		productDTO.setProdTypeName(sortName);
+		this.wrapperInitToDB(productDTO,prodId); //包装几个默认参数
 		int count = productDao.insert(productDTO);
 		if(count >= 1) {
 			return prodId;

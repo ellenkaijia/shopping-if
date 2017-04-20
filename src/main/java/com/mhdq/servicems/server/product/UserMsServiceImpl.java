@@ -1,12 +1,19 @@
 package com.mhdq.servicems.server.product;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mhdq.service.server.product.UserService;
+import com.server.dto.SAddressDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SUserDTO;
+import com.server.dto.SUserOrderShowDTO;
 import com.server.dto.ShopCartDTO;
 import com.server.rpc.UserMsService;
 
@@ -18,6 +25,8 @@ import com.server.rpc.UserMsService;
 */
 public class UserMsServiceImpl implements UserMsService {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private UserService userService;
 	
@@ -89,6 +98,65 @@ public class UserMsServiceImpl implements UserMsService {
 	@Override
 	public boolean removeCollection(String userId, String prodId) {
 		return userService.removeCollection(userId,prodId);
+	}
+
+	@Override
+	public Map<String, String> tradeIntoOrder(String userId, String prodId, Integer buyCount, BigDecimal moneySum, Long addressId) {
+		return userService.tradeIntoOrder(userId, prodId, buyCount, moneySum, addressId);
+	}
+
+	@Override
+	public Map<String, String> shopCartradeOrder(String userId, String prodIds, Long addressId) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			return userService.shopCartradeOrder(userId, prodIds,addressId);
+		} catch (Exception e) {
+			result.put("code", "-99");
+			result.put("orderId", "交易失败");
+			logger.error(e.getMessage());
+			return result;
+		}
+		
+	}
+
+	@Override
+	public List<SUserOrderShowDTO> getUserOrder(String userId, Integer status) {
+		return userService.getUserOrder(userId, status);
+	}
+
+	@Override
+	public List<SProductLevelDTO> getOrderByUidPid(String userId, String prodId, Integer prodCount) {
+		return userService.getOrderByUidPid(userId, prodId, prodCount);
+	}
+
+	@Override
+	public SAddressDTO getAddressStatusOne(String userId) {
+		return userService.getAddressStatusOne(userId);
+	}
+
+	@Override
+	public boolean isHaveAddress(String userId) {
+		return userService.isHaveAddress(userId);
+	}
+
+	@Override
+	public Integer addAddress(String userId, SAddressDTO sAddressDTO) {
+		return userService.addAddress(userId, sAddressDTO);
+	}
+
+	@Override
+	public List<SAddressDTO> getAddressList(String userId) {
+		return userService.getAddressList(userId);
+	}
+
+	@Override
+	public Integer deleteAddress(Integer id) {
+		return userService.deleteAddress(id);
+	}
+
+	@Override
+	public Integer updateAddressStatus(String userId, Integer id) {
+		return userService.updateAddressStatus(userId, id);
 	}
 
 }

@@ -404,4 +404,75 @@ public class SProductServiceImpl implements SProductService {
 		return returnList;
 	}
 
+	@Override
+	public List<SProductLevelDTO> getMoreList(Integer more, SCurentPageDTO sCurentPageDTO) {
+		
+		logger.info("******调用SProductServiceImpl的getSortList方法*******");
+		String[] orders = sCurentPageDTO.getOrders().split("[,，]");
+		switch (orders[0]) {
+		case "date":
+			orders[0] = "create_time";
+			break;
+		case "cash":
+			orders[0] = "prod_prize";
+			break;
+		case "buys":
+			orders[0] = "prod_sell_sum";
+			break;
+		case "comments":
+			orders[0] = "comment_count";
+			break;
+		default:
+			orders[0] = "create_time";
+			orders[1] = "desc";
+			break;
+		}
+
+		List<SProductDTO> result = productDao.getproductByParamsMore(more, orders[0], orders[1],
+				sCurentPageDTO.getCurPageNO() * sCurentPageDTO.getCurPageNum(), sCurentPageDTO.getCurPageNum());
+
+		for (SProductDTO ss : result) {
+			logger.info("SProductDTO :" + ss.getProdName());
+		}
+
+		int count = productDao.getCountProduct();
+
+		int listTotal = count / sCurentPageDTO.getCurPageNum();
+		if (count % sCurentPageDTO.getCurPageNum() != 0) {
+			listTotal++;
+		}
+
+		List<SProductLevelDTO> returnList = new ArrayList<>();
+		SProductLevelDTO sProductLevelDTO = null;
+		List<String> imgUrls = null;
+
+		if (!CollectionUtils.isEmpty(result)) {
+			logger.info("******开始构造SProductLevelDTO循环*******");
+			for (SProductDTO sProductDTO : result) {
+				sProductLevelDTO = new SProductLevelDTO();
+				imgUrls = new ArrayList<>();
+				// 开始赋值
+				this.wrapIntiDBCu(sProductLevelDTO, sProductDTO, sCurentPageDTO, listTotal);
+
+				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
+				if (CollectionUtils.isEmpty(resList)) {
+					returnList.add(sProductLevelDTO);
+					logger.info("******没有找到对应的图片资源******");
+					continue;
+				}
+				for (int i = 1; i < resList.size(); i++) {
+					StringBuffer stringBuffer = new StringBuffer();
+					stringBuffer.append("picResource" + File.separator + resList.get(i).getResParentId()
+							+ File.separator + resList.get(i).getResId() + ".jpg");
+					imgUrls.add(stringBuffer.toString());
+				}
+				sProductLevelDTO.setImgUrls(imgUrls);
+				returnList.add(sProductLevelDTO);
+			}
+		}
+
+		return returnList;
+		
+	}
+
 }

@@ -172,4 +172,73 @@ public class ProductLevelServiceImpl implements ProductLevelService {
 		return returnList;
 	}
 
+	@Override
+	public List<SProductLevelDTO> searchForList(String keyword) {
+		
+		logger.info("******调用ProductLevelServiceImpl的searchForList方法*******");
+		List<SProductLevelDTO> returnList = new ArrayList<>();
+		
+		List<SProductDTO> sbandProductDTO = new ArrayList<>();  //band的产品
+		
+		List<SProductDTO> ssortProductDTO = new ArrayList<>();  //sort的产品
+		
+		List<SProductDTO> sProductDTOs = new ArrayList<>();   //product的产品
+		
+		List<SProductDTO> allProductDTO = new ArrayList<>();  //所有
+		
+		List<SSortDTO> sSortDTOs = productDao.selectSortBySortName(keyword);
+		if(! CollectionUtils.isEmpty(sSortDTOs)) {
+			for(SSortDTO sortDTO : sSortDTOs) {
+				List<SProductDTO> oneSort = productDao.selectBySortId(sortDTO.getSortId());
+				ssortProductDTO.addAll(oneSort);
+			}
+		}
+		
+		List<SBandDTO> sBandDTOs = productDao.selectBandByBandName(keyword);
+		if(! CollectionUtils.isEmpty(sBandDTOs)) {
+			for(SBandDTO sbandDTO : sBandDTOs) {
+				List<SProductDTO> oneBand = productDao.selectByBandId(sbandDTO.getBandId());
+				sbandProductDTO.addAll(oneBand);
+			}
+		}
+		
+		sProductDTOs = productDao.selectBySearchParam(keyword);
+		
+		allProductDTO.addAll(sProductDTOs);
+		allProductDTO.addAll(ssortProductDTO);
+		allProductDTO.addAll(sbandProductDTO);
+		
+		
+
+		SProductLevelDTO sProductLevelDTO = null;
+		List<String> imgUrls = null;
+
+		if (!CollectionUtils.isEmpty(allProductDTO)) {
+			logger.info("******开始构造SProductLevelDTO循环*******");
+			for (SProductDTO sProductDTO : allProductDTO) {
+				sProductLevelDTO = new SProductLevelDTO();
+				imgUrls = new ArrayList<>();
+				// 开始赋值
+				this.wrapIntiDB(sProductLevelDTO, sProductDTO);
+
+				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
+				if (CollectionUtils.isEmpty(resList)) {
+					returnList.add(sProductLevelDTO);
+					logger.info("******没有找到对应的图片资源******");
+					continue;
+				}
+				for (int i = 1; i < resList.size(); i++) {
+					StringBuffer stringBuffer = new StringBuffer();
+					stringBuffer.append("picResource" + File.separator + resList.get(i).getResParentId()
+							+ File.separator + resList.get(i).getResId() + ".jpg");
+					imgUrls.add(stringBuffer.toString());
+				}
+				sProductLevelDTO.setImgUrls(imgUrls);
+				returnList.add(sProductLevelDTO);
+			}
+		}
+
+		return returnList;
+	}
+
 }

@@ -19,4 +19,6 @@ public interface ProductLevelService {
 	List<SBandShowDTO> getProductBandAll();
 	
 	List<SortShowDTO> getSortAll();
+	
+	List<SProductLevelDTO> searchForList(String keyword);
 }

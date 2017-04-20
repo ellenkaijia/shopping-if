@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.OrderDao">
+	
+	<resultMap type="com.server.dto.SOrderDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="prod_id" property="prodId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="status" property="status"/>
+        <result column="talk_status" property="talkStatus"/>
+        <result column="buy_count" property="buyCount"/>
+        <result column="money_sum" property="moneySum"/>
+        <result column="attach_address" property="attachAddress"/>
+        <result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_id,prod_id,order_id,status,talk_status,buy_count,money_sum,attach_address,create_time
+	</sql>
+	
+	<insert id="insertOrder" parameterType="com.server.dto.SOrderDTO">
+		insert into t_order (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{userId,jdbcType=VARCHAR},
+			#{prodId,jdbcType=VARCHAR},
+			#{orderId,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER},
+			#{talkStatus,jdbcType=INTEGER},
+			#{buyCount,jdbcType=INTEGER},
+			#{moneySum,jdbcType=DECIMAL},
+			#{attachAddress,jdbcType=BIGINT},
+			now()
+		)
+	</insert>
+	
+	<select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_order where user_id = #{userId}
+	</select>
+	
+	<select id="selectByOrderId" resultMap="BaseMap" parameterType="java.lang.String">
+		select <include refid="Base_Column_List" /> 
+		from t_order where order_id = #{orderId}
+	</select>
+	
+	<delete id="deleteByOrderId">
+		delete from t_order 
+		where order_id = #{orderId}
+	</delete>
+	
+	<select id="selectByStatusUId" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_order where user_id = #{userId}
+		<if test="status != null">
+			 and status = #{status}
+		</if>
+	</select>
+	
+	<update id="updateStatusByOrderId">
+		update t_order
+		set status = #{status}
+		where order_id = #{orderId}
+	</update>
+	
+</mapper>

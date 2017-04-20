@@ -1,9 +1,13 @@
 package com.mhdq.service.server.product;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import com.server.dto.SAddressDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SUserDTO;
+import com.server.dto.SUserOrderShowDTO;
 import com.server.dto.ShopCartDTO;
 
 /**  
@@ -41,5 +45,25 @@ public interface UserService {
 	List<SProductLevelDTO> getMyCollectionList(String userId);
 	
 	boolean removeCollection(String userId, String prodId);
+	
+	Map<String, String> tradeIntoOrder(String userId, String prodId, Integer buyCount, BigDecimal moneySum, Long addressId);
+	
+	Map<String, String> shopCartradeOrder(String userId, String prodIds, Long addressId) throws Exception;
+	
+	List<SUserOrderShowDTO> getUserOrder(String userId, Integer status);
+
+	List<SProductLevelDTO> getOrderByUidPid(String userId, String prodId, Integer prodCount);
+	
+	SAddressDTO getAddressStatusOne(String userId);
+	
+	boolean isHaveAddress(String userId);
+	
+	Integer addAddress(String userId, SAddressDTO sAddressDTO);
+	
+	List<SAddressDTO> getAddressList(String userId);
+	
+	Integer deleteAddress(Integer id);
+	
+	Integer updateAddressStatus(String userId, Integer id);
 	
 }

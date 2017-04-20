@@ -59,6 +59,8 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	
 	List<SProductDTO> getproductByParamsSort(@Param("sortId") String sortId, @Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
 	
+	List<SProductDTO> getproductByParamsMore(@Param("more") Integer more, @Param("orderBy") String orderBy, @Param("whatOrder") String whatOrder, @Param("start") int start, @Param("end") int end);
+	
 	int getCountProduct();
 	
 	List<SBandDTO> selectAllBand();
@@ -68,4 +70,14 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	List<SSortDTO> selectAllSort();
 	
 	SBandDTO selectBandByBandId(@Param("bandId") String bandId);
+	
+	List<SSortDTO> selectSortBySortName(@Param("sortName") String sortName);
+	
+	List<SBandDTO> selectBandByBandName(@Param("bandName") String bandName);
+	
+	List<SProductDTO> selectBySearchParam(@Param("search") String search);
+	
+	List<SProductDTO> selectByBandId(@Param("bandId") String bandId);
+	
+	List<SProductDTO> selectBySortId(@Param("sortId") String sortId);
 }

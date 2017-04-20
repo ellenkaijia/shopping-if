@@ -246,6 +246,13 @@
 		limit #{start}, #{end}
 	</select>
 	
+	<select id="getproductByParamsMore" resultMap="SBaseResultMap">
+		select <include refid="Base_Column_List" />
+		from t_product where prod_type_code = #{more}
+		order by ${orderBy} ${whatOrder}
+		limit #{start}, #{end}
+	</select>
+	
 	
 	<select id="getCountProduct" resultType="java.lang.Integer">
 		select count(*) from t_product
@@ -277,6 +284,26 @@
 	<select id="getSortBySortId" resultMap="SortMap" parameterType="java.lang.String">
 		select * from t_sort
 		where sort_id = #{sortId}
+	</select>
+	
+	<select id="selectBandByBandName" resultMap="SBandMap">
+		select * from t_band where band_name like CONCAT('%',#{bandName},'%') 
+	</select>
+	
+	<select id="selectSortBySortName" resultMap="SSortMap">
+		select * from t_sort where sort_name like CONCAT('%',#{sortName},'%') 
+	</select>
+	
+	<select id="selectBySearchParam" resultMap="SBaseResultMap">
+		select * from t_product where prod_name like CONCAT('%',#{search},'%')  
+	</select>
+	
+	<select id="selectByBandId" resultMap="SBaseResultMap">
+		select * from t_product where band_id = #{bandId}  
+	</select>
+	
+	<select id="selectBySortId" resultMap="SBaseResultMap">
+		select * from t_product where sort_id = #{sortId}
 	</select>
 	
 </mapper>

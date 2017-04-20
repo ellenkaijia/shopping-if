@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.AddressDao">
+	
+	<resultMap type="com.server.dto.SAddressDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_address" property="userAddress"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="status" property="status"/>
+        <result column="user_name" property="userName"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_id,user_address,user_phone, status,user_name
+	</sql>
+	
+	<insert id="insertSAddress" parameterType="com.server.dto.SAddressDTO">
+		insert into t_address (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{userId,jdbcType=VARCHAR},
+			#{userAddress,jdbcType=VARCHAR},
+			#{userPhone,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_address where user_id = #{userId}
+	</select>
+	
+	<select id="selectByUidStatusOne" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_address where user_id = #{userId} and status = 1
+	</select>
+	
+	<delete id="deleteAddressById">
+		delete from t_address 
+		where id = #{id}
+	</delete>
+	
+	<update id="updateAddressStatusZeroByUserId">
+		update t_address set
+		status = 0 where user_id = #{userId} and status = 1
+	</update>
+	
+	<update id="updateAddressStatusOneById">
+		update t_address set
+		status = 1 where id = #{id}
+	</update>
+	
+</mapper>

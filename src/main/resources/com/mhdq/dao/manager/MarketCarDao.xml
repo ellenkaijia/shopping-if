@@ -44,9 +44,19 @@
 		user_id = #{userId} and prod_id = #{prodId}
 	</delete>
 	
+	<delete id="deleteProdByUId">
+		delete from t_marketcar where 
+		user_id = #{userId}
+	</delete>
+	
 	<select id="getMyShopCartCountByUId" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(*) from t_marketcar
 		where user_id = #{userId}
+	</select>
+	
+	<select id="selectByUIdProdIdTwo" resultMap="BaseMap">
+		select <include refid="Base_Column_List" /> 
+		from t_marketcar where user_id = #{userId} and prod_id = #{prodId}
 	</select>
 	
 </mapper>
