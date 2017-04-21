@@ -18,11 +18,13 @@ public interface AddressDao {
 	
 	List<SAddressDTO> selectByUserId(@Param("userId") String userId);
 	
-	int deleteAddressById(@Param("id") Integer id);
+	int deleteAddressById(@Param("id") Long id);
 	
 	SAddressDTO selectByUidStatusOne(@Param("userId") String userId);
 	
 	int updateAddressStatusZeroByUserId(@Param("userId") String userId);
 	
 	int updateAddressStatusOneById(@Param("id") Integer id);
+	
+	SAddressDTO selectById(@Param("id") Long id);
 }

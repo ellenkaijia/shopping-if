@@ -80,4 +80,6 @@ public interface ProductDao extends BaseDao<ProductDTO> {
 	List<SProductDTO> selectByBandId(@Param("bandId") String bandId);
 	
 	List<SProductDTO> selectBySortId(@Param("sortId") String sortId);
+	
+	int updateSellNumAndNum(@Param("prodId") String prodId,@Param("reduce") Integer reduce,@Param("add") Integer add);
 }

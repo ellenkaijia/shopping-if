@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.server.dto.SAddressDTO;
 import com.server.dto.SProductLevelDTO;
+import com.server.dto.SRepairDTO;
+import com.server.dto.STalkDTO;
 import com.server.dto.SUserDTO;
 import com.server.dto.SUserOrderShowDTO;
 import com.server.dto.ShopCartDTO;
@@ -62,8 +64,18 @@ public interface UserService {
 	
 	List<SAddressDTO> getAddressList(String userId);
 	
-	Integer deleteAddress(Integer id);
+	Integer deleteAddress(Long id);
 	
 	Integer updateAddressStatus(String userId, Integer id);
+	
+	SAddressDTO geAddressDTOByOrderId(String userId, String orderId);
+	
+	List<SProductLevelDTO> getProductByOrderId(String orderId);
+	
+	Integer addRepair(SRepairDTO sRepairDTO);
+	
+	Integer addTalk(STalkDTO stalkDTO);
+	
+	List<SRepairDTO> getMyRepair(String userId);
 	
 }

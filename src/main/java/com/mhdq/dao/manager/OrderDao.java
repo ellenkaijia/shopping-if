@@ -18,11 +18,13 @@ public interface OrderDao {
 	
 	List<SOrderDTO> selectByUserId(@Param("userId") String userId);
 	
-	SOrderDTO selectByOrderId(@Param("orderId") String orderId);
+	List<SOrderDTO> selectByOrderId(@Param("orderId") String orderId);
 	
 	int deleteByOrderId(@Param("orderId") String orderId);
 	
 	List<SOrderDTO> selectByStatusUId(@Param("status") Integer status, @Param("userId") String userId);
 	
 	int updateStatusByOrderId(@Param("status") Integer status, @Param("orderId") String orderId);
+	
+	int updateTalkStatusByOrderIdProdId(@Param("orderId") String orderId, @Param("prodId") String prodId);
 }

@@ -42,4 +42,9 @@
     <dubbo:service
             interface="com.server.rpc.UserMsService"  timeout="50000"
             retries="0" ref="UserMsService" protocol="dubbo" /> 
+    <bean id="MUserMsService"
+          class="com.mhdq.servicems.manager.UserMsServiceImpl" />
+    <dubbo:service
+            interface="com.mhdq.manager.api.service.UserMsService"  timeout="50000"
+            retries="0" ref="MUserMsService" protocol="dubbo" />         
 </beans>  

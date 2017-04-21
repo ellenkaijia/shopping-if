@@ -51,4 +51,8 @@
 		status = 1 where id = #{id}
 	</update>
 	
+	<select id="selectById" resultMap="BaseMap">
+		select * from t_address where id = #{id}
+	</select>
+	
 </mapper>

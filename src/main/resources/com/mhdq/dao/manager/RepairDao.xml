@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.RepairDao">
+	
+	<resultMap type="com.server.dto.SRepairDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="repair_id" property="repairId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="prod_id" property="prodId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_address" property="userAddress"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="what_problem" property="whatProblem"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,repair_id,order_id,prod_id, user_id,user_address,user_name,user_phone,status,create_time,what_problem
+	</sql>
+	
+	<insert id="insert" parameterType="com.server.dto.SRepairDTO">
+		insert into t_repair (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{repairId,jdbcType=VARCHAR},
+			#{orderId,jdbcType=VARCHAR},
+			#{prodId,jdbcType=VARCHAR},
+			#{userId,jdbcType=VARCHAR},
+			#{userAddress,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR},
+			#{userPhone,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER},
+			now(),
+			#{whatProblem,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="getRepairList" resultMap="BaseMap">
+		select * from t_repair where user_id = #{userId}
+	</select>
+	
+</mapper>

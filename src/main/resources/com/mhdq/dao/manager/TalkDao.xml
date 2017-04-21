@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mhdq.dao.manager.TalkDao">
+	
+	<resultMap type="com.server.dto.STalkDTO" id="BaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="prod_id" property="prodId"/>
+        <result column="talk_message" property="talkMessage"/>
+        <result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_id,order_id,prod_id, talk_message,create_time
+	</sql>
+	
+	<insert id="insert" parameterType="com.server.dto.STalkDTO">
+		insert into t_talk (<include refid="Base_Column_List" />)
+		values (
+			#{id,jdbcType=BIGINT},
+			#{userId,jdbcType=VARCHAR},
+			#{orderId,jdbcType=VARCHAR},
+			#{prodId,jdbcType=VARCHAR},
+			#{talkMessage,jdbcType=VARCHAR},
+			now()
+		)
+	</insert>
+	
+</mapper>

@@ -19,7 +19,9 @@ import com.mhdq.dao.manager.AddressDao;
 import com.mhdq.dao.manager.FavorDao;
 import com.mhdq.dao.manager.MarketCarDao;
 import com.mhdq.dao.manager.OrderDao;
+import com.mhdq.dao.manager.RepairDao;
 import com.mhdq.dao.manager.SmsLogDao;
+import com.mhdq.dao.manager.TalkDao;
 import com.mhdq.dao.manager.UserDao;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
@@ -35,6 +37,8 @@ import com.server.dto.SOrderDTO;
 import com.server.dto.SProductDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SProductResDTO;
+import com.server.dto.SRepairDTO;
+import com.server.dto.STalkDTO;
 import com.server.dto.SUserDTO;
 import com.server.dto.SUserOrderShowDTO;
 import com.server.dto.ShopCartDTO;
@@ -76,6 +80,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private AddressDao addressDao;
+	
+	@Autowired
+	private RepairDao repairDao;
+	
+	@Autowired
+	private TalkDao talkDao;
 
 	@Override
 	public boolean checkPhone(String phone) {
@@ -270,7 +280,7 @@ public class UserServiceImpl implements UserService {
 		sOrderDTO.setMoneySum(moneySum);
 		sOrderDTO.setProdId(prodId);
 		sOrderDTO.setStatus(0);
-		sOrderDTO.setTalkStatus(0);
+		sOrderDTO.setTalkStatus(2);
 		sOrderDTO.setUserId(userId);
 		sOrderDTO.setAttachAddress(addressId);
 
@@ -278,7 +288,10 @@ public class UserServiceImpl implements UserService {
 		sOrderDTO.setOrderId(orderId);
 
 		int i = orderDao.insertOrder(sOrderDTO);
-		if (i == 1) {
+		
+		int j = productDao.updateSellNumAndNum(prodId, buyCount, buyCount);
+		
+		if (i == 1 && j == 1) {
 			map.put("code", "0");
 			map.put("orderId", orderId);
 		} else {
@@ -313,13 +326,16 @@ public class UserServiceImpl implements UserService {
 			sOrderDTO.setMoneySum(ss.getProdPrize().multiply(new BigDecimal(resultShop.getProdCount())));
 			sOrderDTO.setProdId(prodId);
 			sOrderDTO.setStatus(0);
-			sOrderDTO.setTalkStatus(0);
+			sOrderDTO.setTalkStatus(2);
 			sOrderDTO.setUserId(userId);
 			sOrderDTO.setOrderId(orderId);
 			sOrderDTO.setAttachAddress(addressId);
 
 			int i = orderDao.insertOrder(sOrderDTO);
-			if (i == 1) {
+			
+			int j = productDao.updateSellNumAndNum(prodId, resultShop.getProdCount(), resultShop.getProdCount());
+			
+			if (i == 1 && j == 1) {
 				marketCarDao.deleteProdByUIdProdId(userId, prodId);
 				Count++;
 			}
@@ -369,10 +385,23 @@ public class UserServiceImpl implements UserService {
 			sUserOrderShowDTO.setOrderId(sOrderDTO.getOrderId());
 			sUserOrderShowDTO.setProdId(sOrderDTO.getProdId());
 			sUserOrderShowDTO.setProdPrizeSum(sOrderDTO.getMoneySum());
-
+			sUserOrderShowDTO.setStatus(sOrderDTO.getStatus());
+			sUserOrderShowDTO.setTalkStatus(sOrderDTO.getTalkStatus());
+			
 			SProductDTO sProductDTO = productDao.getProductByProdId(sOrderDTO.getProdId());
 			sUserOrderShowDTO.setProdName(sProductDTO.getProdName());
 			sUserOrderShowDTO.setProdPrize(sProductDTO.getProdPrize());
+			
+			List<SProductResDTO> resDTOs = productResDao.getSProdResByProdId(sOrderDTO.getProdId());
+			
+			if(CollectionUtils.isEmpty(resDTOs)) {
+				resultList.add(sUserOrderShowDTO);
+				continue;
+			}
+			StringBuffer stringBuffer = new StringBuffer();
+			stringBuffer.append("picResource" + File.separator + resDTOs.get(1).getResParentId()
+					+ File.separator + resDTOs.get(1).getResId() + ".jpg");
+			sUserOrderShowDTO.setImgUrl(stringBuffer.toString());
 
 			resultList.add(sUserOrderShowDTO);
 		}
@@ -489,7 +518,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Integer deleteAddress(Integer id) {
+	public Integer deleteAddress(Long id) {
 		int i = addressDao.deleteAddressById(id);
 		if(i == 1) {
 			return 0;
@@ -507,6 +536,88 @@ public class UserServiceImpl implements UserService {
 			return 0;
 		}
 		return -99;
+	}
+
+	@Override
+	public SAddressDTO geAddressDTOByOrderId(String userId, String orderId) {
+		List<SOrderDTO> list = orderDao.selectByOrderId(orderId);
+		if(! CollectionUtils.isEmpty(list)) {
+			SAddressDTO addressDTO = addressDao.selectById(list.get(0).getAttachAddress());
+			return addressDTO;
+		}
+		return null;
+	}
+
+	@Override
+	public List<SProductLevelDTO> getProductByOrderId(String orderId) {
+		
+		List<SOrderDTO> sorderDTO = orderDao.selectByOrderId(orderId);
+		
+		List<SProductLevelDTO> returnList = new ArrayList<>();
+		SProductLevelDTO sProductLevelDTO = null;
+		List<String> imgUrls = null;
+		
+		if (!CollectionUtils.isEmpty(sorderDTO)) {
+			log.info("******开始构造SProductLevelDTO循环*******");
+			for (SOrderDTO ssrderDTO : sorderDTO) {
+				sProductLevelDTO = new SProductLevelDTO();
+				imgUrls = new ArrayList<>();
+
+				SProductDTO sProductDTO = productDao.getProductByProdId(ssrderDTO.getProdId());
+				// 开始赋值
+				this.wrapIntiDB(sProductLevelDTO, sProductDTO);
+
+				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
+				if (CollectionUtils.isEmpty(resList)) {
+					returnList.add(sProductLevelDTO);
+					log.info("******没有找到对应的图片资源******");
+					continue;
+				}
+				for (int i = 1; i < resList.size(); i++) {
+					StringBuffer stringBuffer = new StringBuffer();
+					stringBuffer.append("picResource" + File.separator + resList.get(i).getResParentId()
+							+ File.separator + resList.get(i).getResId() + ".jpg");
+					imgUrls.add(stringBuffer.toString());
+				}
+				sProductLevelDTO.setImgUrls(imgUrls);
+				returnList.add(sProductLevelDTO);
+			}
+		}
+
+		return returnList;
+		
+	}
+
+	@Override
+	public Integer addRepair(SRepairDTO sRepairDTO) {
+		String repairId = GenerateCode.generateRepairNo();
+		sRepairDTO.setRepairId(repairId);
+		sRepairDTO.setStatus(0);
+		int i = repairDao.insert(sRepairDTO);
+		if(i == 1) {
+			return 0;
+		}
+		return -99;
+	}
+
+	@Override
+	public Integer addTalk(STalkDTO stalkDTO) {
+		
+		int i = talkDao.insert(stalkDTO);
+		if(i == 1) {
+			int j = orderDao.updateTalkStatusByOrderIdProdId(stalkDTO.getOrderId(), stalkDTO.getProdId());
+			if(j == 1) {
+				return 0;
+			} else {
+				return -98;
+			}
+		}
+		return -99;
+	}
+
+	@Override
+	public List<SRepairDTO> getMyRepair(String userId) {
+		return repairDao.getRepairList(userId);
 	}
 
 }

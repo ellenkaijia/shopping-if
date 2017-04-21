@@ -306,4 +306,9 @@
 		select * from t_product where sort_id = #{sortId}
 	</select>
 	
+	<update id="updateSellNumAndNum">
+		update t_product set prod_sum = prod_sum - ${reduce},prod_sell_sum = prod_sell_sum + ${add}
+		where prod_id = #{prodId}
+	</update>
+	
 </mapper>

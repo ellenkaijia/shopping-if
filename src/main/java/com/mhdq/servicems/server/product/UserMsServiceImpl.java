@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mhdq.service.server.product.UserService;
 import com.server.dto.SAddressDTO;
 import com.server.dto.SProductLevelDTO;
+import com.server.dto.SRepairDTO;
+import com.server.dto.STalkDTO;
 import com.server.dto.SUserDTO;
 import com.server.dto.SUserOrderShowDTO;
 import com.server.dto.ShopCartDTO;
@@ -150,13 +152,38 @@ public class UserMsServiceImpl implements UserMsService {
 	}
 
 	@Override
-	public Integer deleteAddress(Integer id) {
+	public Integer deleteAddress(Long id) {
 		return userService.deleteAddress(id);
 	}
 
 	@Override
 	public Integer updateAddressStatus(String userId, Integer id) {
 		return userService.updateAddressStatus(userId, id);
+	}
+
+	@Override
+	public SAddressDTO geAddressDTOByOrderId(String userId, String orderId) {
+		return userService.geAddressDTOByOrderId(userId, orderId);
+	}
+
+	@Override
+	public List<SProductLevelDTO> getProductByOrderId(String orderId) {
+		return userService.getProductByOrderId(orderId);
+	}
+
+	@Override
+	public Integer addRepair(SRepairDTO sRepairDTO) {
+		return userService.addRepair(sRepairDTO);
+	}
+
+	@Override
+	public Integer addTalk(STalkDTO stalkDTO) {
+		return userService.addTalk(stalkDTO);
+	}
+
+	@Override
+	public List<SRepairDTO> getMyRepair(String userId) {
+		return userService.getMyRepair(userId);
 	}
 
 }

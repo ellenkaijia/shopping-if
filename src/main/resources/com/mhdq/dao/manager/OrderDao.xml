@@ -64,4 +64,10 @@
 		where order_id = #{orderId}
 	</update>
 	
+	<update id="updateTalkStatusByOrderIdProdId">
+		update t_order
+		set talk_status = 1
+		where order_id = #{orderId} and prod_id = #{prodId}
+	</update>
+	
 </mapper>
