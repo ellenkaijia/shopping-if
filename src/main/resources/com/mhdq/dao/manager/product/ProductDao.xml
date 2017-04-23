@@ -204,7 +204,7 @@
 		select <include refid="Base_Column_List" />
 		from t_product
 		where prod_type_code = #{prodTypeCode}
-		order by create_time desc limit 9
+		order by create_time desc limit 6
 	</select>
 	
 	<select id="getProductByProdId" parameterType="java.lang.String" resultMap="SBaseResultMap">

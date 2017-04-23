@@ -1,5 +1,9 @@
 package com.mhdq.dao.manager;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.server.dto.STalkDTO;
 
 /**  
@@ -11,4 +15,8 @@ import com.server.dto.STalkDTO;
 public interface TalkDao {
 
 	int insert(STalkDTO sTalkDTO);
+	
+	int getCountByProdId(@Param("prodId") String prodId); 
+	
+	List<STalkDTO> getTalkListByprodId(@Param("prodId") String prodId);
 }

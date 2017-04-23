@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mhdq.dao.manager.TalkDao;
+import com.mhdq.dao.manager.UserDao;
 import com.mhdq.dao.manager.product.ProductDao;
 import com.mhdq.dao.manager.productres.ProductResDao;
 import com.mhdq.service.server.product.SProductService;
@@ -17,6 +19,9 @@ import com.server.dto.SCurentPageDTO;
 import com.server.dto.SProductDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SProductResDTO;
+import com.server.dto.STalkDTO;
+import com.server.dto.STalkShowDTO;
+import com.server.dto.SUserDTO;
 
 /**
  * 类说明
@@ -34,6 +39,12 @@ public class SProductServiceImpl implements SProductService {
 
 	@Autowired
 	private ProductResDao productResDao;
+	
+	@Autowired
+	private TalkDao talkDao;
+	
+	@Autowired
+	private UserDao userDao;
 
 	@Override
 	public SProductLevelDTO getProductDetail(String prodId) {
@@ -473,6 +484,30 @@ public class SProductServiceImpl implements SProductService {
 
 		return returnList;
 		
+	}
+
+	@Override
+	public List<STalkShowDTO> getProductTalkList(String prodId) {
+		
+		List<STalkShowDTO> resultList = new ArrayList<>();
+		List<STalkDTO> list = talkDao.getTalkListByprodId(prodId);
+		STalkShowDTO dto = null;
+		if(CollectionUtils.isEmpty(list)) {
+			return resultList;
+		}
+		for(STalkDTO talkDTO : list) {
+			dto = new STalkShowDTO();
+			SUserDTO sUserDTO = userDao.selectAllByUid(talkDTO.getUserId());
+			
+			dto.setCreateTime(talkDTO.getCreateTime());
+			dto.setId(talkDTO.getId());
+			dto.setUserName(sUserDTO.getUserName());
+			dto.setTalkMessage(talkDTO.getTalkMessage());
+			
+			resultList.add(dto);
+		}
+		
+		return resultList;
 	}
 
 }

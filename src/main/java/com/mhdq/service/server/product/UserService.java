@@ -78,4 +78,8 @@ public interface UserService {
 	
 	List<SRepairDTO> getMyRepair(String userId);
 	
+	Integer addNoBuyRepair(SRepairDTO sRepairDTO);
+	
+	Integer getProductTalkCount(String prodId);
+	
 }

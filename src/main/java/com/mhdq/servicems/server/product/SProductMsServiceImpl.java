@@ -10,6 +10,7 @@ import com.mhdq.service.server.product.SProductService;
 import com.server.dto.SCurentPageDTO;
 import com.server.dto.SProductLevelDTO;
 import com.server.dto.SProductTalkDTO;
+import com.server.dto.STalkShowDTO;
 import com.server.rpc.SProductMsService;
 
 /**  
@@ -60,6 +61,11 @@ public class SProductMsServiceImpl implements SProductMsService {
 	@Override
 	public List<SProductLevelDTO> getMoreList(Integer more, SCurentPageDTO sCurentPageDTO) {
 		return sProductService.getMoreList(more, sCurentPageDTO);
+	}
+
+	@Override
+	public List<STalkShowDTO> getProductTalkList(String prodId) {
+		return sProductService.getProductTalkList(prodId);
 	}
 
 }

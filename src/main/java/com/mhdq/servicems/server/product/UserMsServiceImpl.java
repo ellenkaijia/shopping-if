@@ -186,4 +186,14 @@ public class UserMsServiceImpl implements UserMsService {
 		return userService.getMyRepair(userId);
 	}
 
+	@Override
+	public Integer addNoBuyRepair(SRepairDTO sRepairDTO) {
+		return userService.addNoBuyRepair(sRepairDTO);
+	}
+
+	@Override
+	public Integer getProductTalkCount(String prodId) {
+		return userService.getProductTalkCount(prodId);
+	}
+
 }

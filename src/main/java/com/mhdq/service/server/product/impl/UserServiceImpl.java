@@ -566,6 +566,7 @@ public class UserServiceImpl implements UserService {
 				SProductDTO sProductDTO = productDao.getProductByProdId(ssrderDTO.getProdId());
 				// 开始赋值
 				this.wrapIntiDB(sProductLevelDTO, sProductDTO);
+				sProductLevelDTO.setBuyCount(ssrderDTO.getBuyCount());
 
 				List<SProductResDTO> resList = productResDao.getSProdResByProdId(sProductDTO.getProdId());
 				if (CollectionUtils.isEmpty(resList)) {
@@ -618,6 +619,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<SRepairDTO> getMyRepair(String userId) {
 		return repairDao.getRepairList(userId);
+	}
+
+	@Override
+	public Integer addNoBuyRepair(SRepairDTO sRepairDTO) {
+		String repairId = GenerateCode.generateRepairNo();
+		sRepairDTO.setRepairId(repairId);
+		sRepairDTO.setStatus(0);
+		int i = repairDao.insert(sRepairDTO);
+		if(i == 1) {
+			return 0;
+		}
+		return -99;
+	}
+
+	@Override
+	public Integer getProductTalkCount(String prodId) {
+		return talkDao.getCountByProdId(prodId);
 	}
 
 }

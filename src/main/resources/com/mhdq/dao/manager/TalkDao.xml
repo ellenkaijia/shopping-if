@@ -27,4 +27,12 @@
 		)
 	</insert>
 	
+	<select id="getCountByProdId" resultType="java.lang.Integer">
+		select count(*) from t_talk where prod_id = #{prodId}
+	</select>
+	
+	<select id="getTalkListByprodId" resultMap="BaseMap">
+		select * from t_talk where prod_id = #{prodId}
+	</select>
+	
 </mapper>
