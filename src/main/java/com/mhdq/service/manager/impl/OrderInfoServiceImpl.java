@@ -71,6 +71,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 				mInfoShowDTO.setUserName(sAddressDTO.getUserName());
 				mInfoShowDTO.setUserAddress(sAddressDTO.getUserAddress());
 				mInfoShowDTO.setUserPhone(sAddressDTO.getUserPhone());
+				mInfoShowDTO.setOrderId(mm.getOrderId());
 				
 				resultList.add(mInfoShowDTO);
 			}
