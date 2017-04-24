@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.manager.product.dto.MOrderInfoDTO;
+import com.server.api.easyui.Page;
 import com.server.dto.SOrderDTO;
 
 /**  
@@ -27,4 +29,12 @@ public interface OrderDao {
 	int updateStatusByOrderId(@Param("status") Integer status, @Param("orderId") String orderId);
 	
 	int updateTalkStatusByOrderIdProdId(@Param("orderId") String orderId, @Param("prodId") String prodId);
+	
+	
+	// manager 系统
+	List<MOrderInfoDTO> getOrderList(Page page);
+	
+	int updateStatusOneById(@Param("id") Long id);
+	
+	int updateStatusThreeById(@Param("id") Long id);
 }

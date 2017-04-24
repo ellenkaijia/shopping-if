@@ -46,5 +46,17 @@
           class="com.mhdq.servicems.manager.UserMsServiceImpl" />
     <dubbo:service
             interface="com.mhdq.manager.api.service.UserMsService"  timeout="50000"
-            retries="0" ref="MUserMsService" protocol="dubbo" />         
+            retries="0" ref="MUserMsService" protocol="dubbo" /> 
+            
+    <bean id="OrderMsService"
+          class="com.mhdq.servicems.manager.OrderMsServiceImpl" />
+    <dubbo:service
+            interface="com.mhdq.manager.api.service.OrderMsService"  timeout="50000"
+            retries="0" ref="OrderMsService" protocol="dubbo" />
+
+    <bean id="RepairMsService"
+          class="com.mhdq.servicems.manager.RepairMsServiceImpl" />
+    <dubbo:service
+            interface="com.mhdq.manager.api.service.RepairMsService"  timeout="50000"
+            retries="0" ref="RepairMsService" protocol="dubbo" />         
 </beans>  

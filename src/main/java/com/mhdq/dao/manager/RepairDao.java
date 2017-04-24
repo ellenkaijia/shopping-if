@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.manager.product.dto.MRepairInfoDTO;
+import com.server.api.easyui.Page;
 import com.server.dto.SRepairDTO;
 
 /**  
@@ -18,5 +20,10 @@ public interface RepairDao {
 	
 	List<SRepairDTO> getRepairList(@Param("userId") String userId);
 	
+	//manager
+	
+	List<MRepairInfoDTO> getManagerRepair(Page page);
+	
+	int updateStatusToOne(@Param("id") Long id);
 	
 }

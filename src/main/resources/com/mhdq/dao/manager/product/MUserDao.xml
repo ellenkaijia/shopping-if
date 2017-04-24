@@ -9,6 +9,16 @@
 		<result column="user_password" property="userPassword"/>
 	</resultMap>
 	
+	<resultMap type="com.manager.product.dto.MAddressInfoDTO" id="AddressResultMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_address" property="userAddress"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="status" property="status"/>
+        <result column="user_name" property="userName"/>
+	</resultMap>	
+	
+	
 	<sql id="Base_Column_List">
 		id,user_id,user_name,user_phone,user_password
 	</sql>
@@ -24,6 +34,22 @@
 		</if>
 		<if test="params.userId != null and params.userId != ''">
 			and user_id LIKE concat('%',#{params.userId},'%') 
+		</if>
+	</select>
+	
+	<select id="selectAddressList"  parameterType="page" resultMap="AddressResultMap">
+		select * from t_address where 1=1
+		<if test="params.userName != null and params.userName != ''">
+			and user_name LIKE concat('%',#{params.userName},'%') 
+		</if>
+		<if test="params.userPhone != null and params.userPhone != ''">
+			and user_phone LIKE concat('%',#{params.userPhone},'%') 
+		</if>
+		<if test="params.userId != null and params.userId != ''">
+			and user_id LIKE concat('%',#{params.userId},'%') 
+		</if>
+		<if test="params.status != null">
+			and status = #{params.status}
 		</if>
 	</select>
 	

@@ -2,6 +2,7 @@ package com.mhdq.servicems.manager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.manager.product.dto.MAddressInfoDTO;
 import com.manager.product.dto.UserInfoDTO;
 import com.mhdq.manager.api.service.UserMsService;
 import com.mhdq.service.manager.UserInfoService;
@@ -22,6 +23,11 @@ public class UserMsServiceImpl implements UserMsService{
 	@Override
 	public DataGrid dataGrid(UserInfoDTO userInfoDTO, Page page) {
 		return userInfoService.dataGrid(userInfoDTO, page);
+	}
+
+	@Override
+	public DataGrid addressList(MAddressInfoDTO maddressInfoDTO, Page page) {
+		return userInfoService.addressList(maddressInfoDTO, page);
 	}
 
 }

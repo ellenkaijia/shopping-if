@@ -1,5 +1,6 @@
 package com.mhdq.service.manager;
 
+import com.manager.product.dto.MAddressInfoDTO;
 import com.manager.product.dto.UserInfoDTO;
 import com.server.api.easyui.DataGrid;
 import com.server.api.easyui.Page;
@@ -13,4 +14,6 @@ import com.server.api.easyui.Page;
 public interface UserInfoService {
 
 	DataGrid dataGrid(UserInfoDTO userInfoDTO, Page page);
+	
+	DataGrid addressList(MAddressInfoDTO maddressInfoDTO, Page page);
 }

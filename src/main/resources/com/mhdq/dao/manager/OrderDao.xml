@@ -15,6 +15,19 @@
         <result column="create_time" property="createTime"/>
 	</resultMap>
 	
+	<resultMap type="com.manager.product.dto.MOrderInfoDTO" id="MBaseMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId"/>
+        <result column="prod_id" property="prodId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="status" property="status"/>
+        <result column="talk_status" property="talkStatus"/>
+        <result column="buy_count" property="buyCount"/>
+        <result column="money_sum" property="moneySum"/>
+        <result column="attach_address" property="attachAddress"/>
+        <result column="create_time" property="createTime"/>
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		id,user_id,prod_id,order_id,status,talk_status,buy_count,money_sum,attach_address,create_time
 	</sql>
@@ -68,6 +81,28 @@
 		update t_order
 		set talk_status = 1
 		where order_id = #{orderId} and prod_id = #{prodId}
+	</update>
+	
+	<!-- manager -->
+	<select id="getOrderList" parameterType="page" resultMap="MBaseMap">
+		select *
+		from t_order where 1=1
+		<if test="params.orderId != null and params.orderId != ''">
+			and order_id LIKE concat('%',#{params.orderId},'%') 
+		</if>
+		<if test="params.status != null">
+			and status = #{params.status} 
+		</if>
+	</select>
+	
+	<update id="updateStatusOneById">
+		update t_order set
+		status = 1 where id = #{id}
+	</update>
+	
+	<update id="updateStatusThreeById">
+		update t_order set
+		status = 3 where id = #{id}
 	</update>
 	
 </mapper>

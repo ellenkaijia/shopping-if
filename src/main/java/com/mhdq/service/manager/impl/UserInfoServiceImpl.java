@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.manager.product.dto.ProductDTO;
+import com.manager.product.dto.MAddressInfoDTO;
 import com.manager.product.dto.UserInfoDTO;
 import com.mhdq.dao.manager.product.MUserDao;
 import com.mhdq.service.manager.UserInfoService;
@@ -29,6 +29,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 		page.setParams(userInfoDTO);
 		List<UserInfoDTO> list = muserDao.dataGrid(page);
 		return Page.getDataGrid(page, list, UserInfoDTO.class);
+	}
+
+	@Override
+	public DataGrid addressList(MAddressInfoDTO maddressInfoDTO, Page page) {
+		page.setParams(maddressInfoDTO);
+		List<MAddressInfoDTO> list = muserDao.selectAddressList(page);
+		return Page.getDataGrid(page, list, MAddressInfoDTO.class);
 	}
 
 }

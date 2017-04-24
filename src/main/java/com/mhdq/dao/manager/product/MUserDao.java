@@ -2,6 +2,7 @@ package com.mhdq.dao.manager.product;
 
 import java.util.List;
 
+import com.manager.product.dto.MAddressInfoDTO;
 import com.manager.product.dto.UserInfoDTO;
 import com.server.api.easyui.Page;
 
@@ -14,4 +15,6 @@ import com.server.api.easyui.Page;
 public interface MUserDao {
 
 	List<UserInfoDTO> dataGrid(Page page);
+	
+	List<MAddressInfoDTO> selectAddressList(Page page);
 }
